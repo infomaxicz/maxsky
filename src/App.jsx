@@ -333,7 +333,7 @@ export default function App() {
       <footer className="ft">
         <div className="logo"><span className="pin"><span className="plane">✈</span></span><span className="word">Maxi<span className="hl">S</span>ky</span></div>
         <span className="ft-sp" />
-        <p>Vyhľadávanie leteniek · powered by Travelpayouts</p>
+        <p>Vyhľadávanie leteniek · powered by MaxiSky</p>
       </footer>
     </div>
   );
