@@ -43,8 +43,8 @@ const DESTS = [
 const STYLES = `
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@600&display=swap');
 
-.mx { --navy:#15202C; --navy2:#1C2A3A; --navy3:#22344A; --green:#4FCB6E;
-  --green-d:#3CB85B; --white:#FFFFFF; --mist:#94A4B6; --field:#FFFFFF;
+.mx { --navy:#15202C; --navy2:#1C2A3A; --navy3:#22344A; --green:#3B82F6;
+  --green-d:#2563EB; --white:#FFFFFF; --mist:#94A4B6; --field:#FFFFFF;
   --ink:#15202C; --line:rgba(255,255,255,.10); --line2:rgba(255,255,255,.16);
   font-family:'Inter',system-ui,sans-serif; color:var(--white);
   background:var(--navy); min-height:100%; box-sizing:border-box; overflow-x:hidden; }
@@ -98,7 +98,7 @@ const STYLES = `
 .trip { display:flex; gap:8px; margin-bottom:14px; }
 .trip button { font-size:13px; font-weight:600; color:var(--mist); background:transparent;
   border:1px solid var(--line2); border-radius:999px; padding:7px 14px; transition:.15s; }
-.trip button.on { color:var(--navy); background:var(--green); border-color:var(--green); }
+.trip button.on { color:#fff; background:var(--green); border-color:var(--green); }
 
 .row { display:grid; grid-template-columns:1fr 44px 1fr; gap:10px; margin-bottom:10px; }
 .row.two { grid-template-columns:1fr 1fr; }
@@ -115,10 +115,10 @@ const STYLES = `
 .swap { align-self:center; width:44px; height:44px; border-radius:50%; flex-shrink:0;
   background:var(--navy3); color:var(--green); border:1px solid var(--line2);
   display:grid; place-items:center; font-size:17px; transition:.15s; }
-.swap:hover { background:var(--green); color:var(--navy); transform:rotate(180deg); }
+.swap:hover { background:var(--green); color:#fff; transform:rotate(180deg); }
 
 .go { width:100%; padding:16px; border-radius:14px; border:none; background:var(--green);
-  color:var(--navy); font-family:'Sora'; font-weight:700; font-size:17px; letter-spacing:-.2px;
+  color:#fff; font-family:'Sora'; font-weight:700; font-size:17px; letter-spacing:-.2px;
   margin-top:6px; transition:.15s; display:flex; align-items:center; justify-content:center; gap:9px; }
 .go:hover { background:var(--green-d); transform:translateY(-1px); }
 .go:focus-visible { outline:3px solid #fff; outline-offset:2px; }
@@ -129,7 +129,7 @@ const STYLES = `
 .chips .lbl { font-size:12px; color:var(--mist); font-weight:600; margin-right:2px; }
 .chip { font-size:12.5px; font-weight:600; color:#CAD4DF; background:rgba(255,255,255,.05);
   border:1px solid var(--line2); border-radius:999px; padding:7px 13px; transition:.15s; }
-.chip:hover { color:var(--navy); background:var(--green); border-color:var(--green); }
+.chip:hover { color:#fff; background:var(--green); border-color:var(--green); }
 
 /* ── value strip ── */
 .vals { max-width:1140px; margin:54px auto 0; padding:0 22px;
