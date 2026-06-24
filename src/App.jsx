@@ -61,6 +61,7 @@ const STYLES = `
 .logo .pin { width:30px; height:30px; border-radius:9px; display:grid; place-items:center;
   background:var(--green); color:var(--navy); font-size:16px;
   box-shadow:0 4px 14px rgba(79,203,110,.35); }
+.logo .pin .plane { display:inline-block; transform:rotate(-45deg); }
 .logo .word { letter-spacing:-.4px; }
 .logo .word .hl { color:var(--green); }
 .nav-sp { flex:1; }
@@ -143,7 +144,7 @@ const STYLES = `
 /* ── destinations ── */
 .dst-wrap { max-width:1140px; margin:60px auto 0; padding:0 22px; }
 .sec-h { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:18px; }
-.sec-h h2 { font-family:'Sora'; font-weight:700; font-size:24px; letter-spacing:-.6px; margin:0; }
+.sec-h h2 { font-family:'Sora'; font-weight:700; font-size:24px; letter-spacing:-.6px; margin:0; color:var(--white); }
 .sec-h span { font-size:13px; color:var(--mist); }
 .dst-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
 .dst { border-radius:16px; overflow:hidden; border:1px solid var(--line2); text-align:left;
@@ -154,7 +155,7 @@ const STYLES = `
   font-size:11px; font-weight:600; color:#fff; background:rgba(0,0,0,.28);
   padding:3px 8px; border-radius:6px; }
 .dst .meta { padding:13px 15px; display:flex; align-items:center; justify-content:space-between; }
-.dst .meta .city { font-family:'Sora'; font-weight:600; font-size:15px; }
+.dst .meta .city { font-family:'Sora'; font-weight:600; font-size:15px; color:#fff; }
 .dst .meta .arr { color:var(--green); font-size:16px; }
 
 /* ── footer ── */
@@ -206,7 +207,7 @@ export default function App() {
 
       {/* nav */}
       <nav className="nav">
-        <div className="logo"><span className="pin">✈</span><span className="word">Maxi<span className="hl">S</span>ky</span></div>
+        <div className="logo"><span className="pin"><span className="plane">✈</span></span><span className="word">Maxi<span className="hl">S</span>ky</span></div>
         <span className="nav-sp" />
         <span className="nav-meta"><b>SK</b> · <b>EUR</b></span>
         <a className="nav-link" href={WL}>Ubytovanie</a>
@@ -312,7 +313,11 @@ export default function App() {
         <div className="dst-grid">
           {DESTS.map((d) => (
             <button key={d.code} className="dst" onClick={() => pick("BTS", d.code)}>
-              <div className="img" style={{ background: d.g }}>
+              <div className="img" style={{
+                backgroundImage: `linear-gradient(rgba(21,32,44,0.15), rgba(21,32,44,0.85)), url('/destinations/${d.code}.jpg'), ${d.g}`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}>
                 <span className="code">{d.code}</span>
               </div>
               <div className="meta">
@@ -326,7 +331,7 @@ export default function App() {
 
       {/* footer */}
       <footer className="ft">
-        <div className="logo"><span className="pin">✈</span><span className="word">Maxi<span className="hl">S</span>ky</span></div>
+        <div className="logo"><span className="pin"><span className="plane">✈</span></span><span className="word">Maxi<span className="hl">S</span>ky</span></div>
         <span className="ft-sp" />
         <p>Vyhľadávanie leteniek · powered by Travelpayouts</p>
       </footer>
