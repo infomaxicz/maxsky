@@ -1,0 +1,23 @@
+name: Deploy to MaxiSky
+on:
+  push:
+    branches: [main]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm run build
+      - name: Deploy via rsync
+        uses: burnett01/rsync-deployments@v8
+        with:
+          switches: -avzr --delete
+          path: dist/
+          remote_path: /var/www/maxisky/
+          remote_host: 138.199.236.68
+          remote_user: root
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}

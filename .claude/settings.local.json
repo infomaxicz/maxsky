@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(grep -iE \"vercel|netlify|deploy|firebase|wrangler|\\\\.sh$|Dockerfile|ftp\")",
+      "Bash(rsync -avz --delete -e \"ssh -i ~/.ssh/sky_pri -o StrictHostKeyChecking=accept-new\" dist/ root@138.199.236.68:/var/www/maxisky/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" https://maxisky.eu)",
+      "Bash(curl -s https://maxisky.eu)",
+      "Bash(xargs kill -9)"
+    ]
+  }
+}
