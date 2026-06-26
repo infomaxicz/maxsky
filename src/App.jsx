@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 // ─────────────────────────────────────────────────────────────
 // Skysell — maxisky.eu landing
@@ -8,6 +8,7 @@ import React, { useState, useRef } from "react";
 // ─────────────────────────────────────────────────────────────
 
 const WL = "https://fly.maxisky.eu/flights/";
+const STAY = "https://stay.maxisky.eu";
 
 function buildWlUrl({ from, to, depart, ret, adults }) {
   const params = new URLSearchParams({
@@ -26,27 +27,159 @@ function buildWlUrl({ from, to, depart, ret, adults }) {
 }
 
 const POPULAR = [
-  { from: "PRG", to: "LON", label: "Praha → Londýn" },
-  { from: "PRG", to: "BCN", label: "Praha → Barcelona" },
-  { from: "BTS", to: "LON", label: "Bratislava → Londýn" },
-  { from: "VIE", to: "FCO", label: "Viedeň → Rím" },
-  { from: "VIE", to: "CDG", label: "Viedeň → Paríž" },
+  { from: "PRG", to: "LON", key: "pop_prg_lon" },
+  { from: "PRG", to: "BCN", key: "pop_prg_bcn" },
+  { from: "BTS", to: "LON", key: "pop_bts_lon" },
+  { from: "VIE", to: "FCO", key: "pop_vie_fco" },
+  { from: "VIE", to: "CDG", key: "pop_vie_cdg" },
 ];
 
 const DESTS = [
-  { city: "Londýn", code: "LON", g: "linear-gradient(150deg,#2b3a52,#46618c)" },
-  { city: "Barcelona", code: "BCN", g: "linear-gradient(150deg,#3a4a3f,#5f8c6a)" },
-  { city: "Rím", code: "FCO", g: "linear-gradient(150deg,#4a3f3a,#8c6f5f)" },
-  { city: "Paríž", code: "CDG", g: "linear-gradient(150deg,#3a3f4a,#5f6a8c)" },
+  { code: "LON", g: "linear-gradient(150deg,#2b3a52,#46618c)" },
+  { code: "BCN", g: "linear-gradient(150deg,#3a4a3f,#5f8c6a)" },
+  { code: "FCO", g: "linear-gradient(150deg,#4a3f3a,#8c6f5f)" },
+  { code: "CDG", g: "linear-gradient(150deg,#3a3f4a,#5f6a8c)" },
 ];
 
-const FAQ = [
-  { q: "Ako MaxiSky funguje?", a: "Porovnáme ponuky 300+ aerolínií a predajcov a presmerujeme ťa na tú najvýhodnejšiu. Rezerváciu dokončíš priamo u predajcu." },
-  { q: "Platím MaxiSky nejaký poplatok?", a: "Nie. Naša služba je pre teba úplne zadarmo — platíš len cenu letenky u predajcu." },
-  { q: "V akej mene sú ceny?", a: "Ceny zobrazujeme v eurách (€)." },
-  { q: "Ako zaplatím a kde dostanem letenku?", a: "Platbu aj letenku vybavuje predajca, ku ktorému ťa presmerujeme. Letenku ti pošle e-mailom." },
-  { q: "Dajú sa hľadať aj spiatočné lety?", a: "Áno — jednosmerné aj spiatočné lety." },
+const FAQ_KEYS = [0, 1, 2, 3, 4];
+
+const LANGS = [
+  { code: "cs", short: "CZ", labelKey: "lang_cs" },
+  { code: "sk", short: "SK", labelKey: "lang_sk" },
+  { code: "en", short: "EN", labelKey: "lang_en" },
 ];
+
+// ── i18n ───────────────────────────────────────────────────────
+const translations = {
+  cs: {
+    lang_cs: "Čeština", lang_sk: "Slovenčina", lang_en: "English",
+    nav_stay: "Ubytování",
+    hero_eyebrow: "Levné letenky · 300+ aerolinek",
+    hero_title_pre: "Vaše cesta", hero_title_mid: "začíná", hero_title_accent: "tady.",
+    hero_lead: "Porovnejte stovky aerolinek najednou a rezervujte letenku za nejlepší cenu. Bez skrytých poplatků, v eurech.",
+    trip_round: "Zpáteční", trip_oneway: "Jednosměrné",
+    f_from: "Odkud", f_to: "Kam", f_depart: "Odlet", f_return: "Návrat", f_pax: "Cestující",
+    swap_aria: "Prohodit",
+    adults_1: "1 dospělý", adults_2: "2 dospělí", adults_3: "3 dospělí", adults_4: "4 dospělí",
+    search_btn: "Hledat lety →",
+    hint_fromto: "Zadejte odkud i kam letíte.", hint_depart: "Vyberte datum odletu.",
+    chips_label: "Oblíbené:",
+    pop_prg_lon: "Praha → Londýn", pop_prg_bcn: "Praha → Barcelona", pop_bts_lon: "Bratislava → Londýn",
+    pop_vie_fco: "Vídeň → Řím", pop_vie_cdg: "Vídeň → Paříž",
+    why_aria: "Proč MaxiSky",
+    why1_h: "300+ aerolinek", why1_p: "Porovnáváme stovky dopravců najednou",
+    why2_h: "Bez skrytých poplatků", why2_p: "Cena, kterou vidíš, je cena, kterou platíš",
+    why3_h: "Bezpečná rezervace", why3_p: "Nakupuješ u ověřených prodejců",
+    why4_h: "Rychle a zdarma", why4_p: "Naše služba tě nestojí nic navíc",
+    val1_h: "300+ aerolinek najednou", val1_p: "Jedno hledání porovná klasické i nízkonákladové společnosti a najde nejlevnější kombinaci.",
+    val2_h: "Ceny v eurech, bez přirážek", val2_p: "Vidíš férovou cenu předem. Žádné skryté poplatky na konci rezervace.",
+    val3_h: "Rezervace za pár minut", val3_p: "Vyber let a dokonči rezervaci přímo u ověřeného prodejce. Rychle a bezpečně.",
+    dst_h: "Oblíbené destinace", dst_sub: "Klikni a vyhledej lety",
+    dest_LON: "Londýn", dest_BCN: "Barcelona", dest_FCO: "Řím", dest_CDG: "Paříž",
+    faq_h: "Časté dotazy", faq_sub: "Vše, co potřebuješ vědět",
+    faq_q_0: "Jak MaxiSky funguje?",
+    faq_a_0: "Porovnáme nabídky 300+ aerolinek a prodejců a přesměrujeme tě na tu nejvýhodnější. Rezervaci dokončíš přímo u prodejce.",
+    faq_q_1: "Platím MaxiSky nějaký poplatek?",
+    faq_a_1: "Ne. Naše služba je pro tebe úplně zdarma — platíš jen cenu letenky u prodejce.",
+    faq_q_2: "V jaké měně jsou ceny?",
+    faq_a_2: "Ceny zobrazujeme v eurech (€).",
+    faq_q_3: "Jak zaplatím a kde dostanu letenku?",
+    faq_a_3: "Platbu i letenku vyřizuje prodejce, ke kterému tě přesměrujeme. Letenku ti pošle e-mailem.",
+    faq_q_4: "Dají se hledat i zpáteční lety?",
+    faq_a_4: "Ano — jednosměrné i zpáteční lety.",
+    ft_slogan: "Levné letenky pro tvé cesty.",
+    ft_about: "O nás", ft_faq: "Časté dotazy", ft_privacy: "Ochrana soukromí", ft_contact: "Kontakt",
+    ft_copy: "© 2026 MaxiSky · Porovnávač letenek",
+  },
+  sk: {
+    lang_cs: "Čeština", lang_sk: "Slovenčina", lang_en: "English",
+    nav_stay: "Ubytovanie",
+    hero_eyebrow: "Lacné letenky · 300+ aeroliniek",
+    hero_title_pre: "Vaša cesta", hero_title_mid: "začína", hero_title_accent: "tu.",
+    hero_lead: "Porovnaj stovky aeroliniek naraz a rezervuj letenku za najlepšiu cenu. Bez skrytých poplatkov, v eurách.",
+    trip_round: "Spiatočne", trip_oneway: "Jednosmerne",
+    f_from: "Odkiaľ", f_to: "Kam", f_depart: "Odlet", f_return: "Návrat", f_pax: "Cestujúci",
+    swap_aria: "Vymeniť",
+    adults_1: "1 dospelý", adults_2: "2 dospelí", adults_3: "3 dospelí", adults_4: "4 dospelí",
+    search_btn: "Hľadať lety →",
+    hint_fromto: "Zadaj odkiaľ aj kam letíš.", hint_depart: "Vyber dátum odletu.",
+    chips_label: "Obľúbené:",
+    pop_prg_lon: "Praha → Londýn", pop_prg_bcn: "Praha → Barcelona", pop_bts_lon: "Bratislava → Londýn",
+    pop_vie_fco: "Viedeň → Rím", pop_vie_cdg: "Viedeň → Paríž",
+    why_aria: "Prečo MaxiSky",
+    why1_h: "300+ aerolínií", why1_p: "Porovnávame stovky dopravcov naraz",
+    why2_h: "Bez skrytých poplatkov", why2_p: "Cena, ktorú vidíš, je cena, ktorú platíš",
+    why3_h: "Bezpečná rezervácia", why3_p: "Nakupuješ u overených predajcov",
+    why4_h: "Rýchlo a zdarma", why4_p: "Naša služba ťa nestojí nič navyše",
+    val1_h: "300+ aeroliniek naraz", val1_p: "Jedno hľadanie porovná klasické aj nízkonákladové spoločnosti a nájde najlacnejšiu kombináciu.",
+    val2_h: "Ceny v eurách, bez prirážok", val2_p: "Vidíš férovú cenu vopred. Žiadne skryté poplatky na konci rezervácie.",
+    val3_h: "Rezervácia za pár minút", val3_p: "Vyber let a dokonči rezerváciu priamo u overeného predajcu. Rýchlo a bezpečne.",
+    dst_h: "Obľúbené destinácie", dst_sub: "Klikni a vyhľadaj lety",
+    dest_LON: "Londýn", dest_BCN: "Barcelona", dest_FCO: "Rím", dest_CDG: "Paríž",
+    faq_h: "Časté otázky", faq_sub: "Všetko, čo potrebuješ vedieť",
+    faq_q_0: "Ako MaxiSky funguje?",
+    faq_a_0: "Porovnáme ponuky 300+ aerolínií a predajcov a presmerujeme ťa na tú najvýhodnejšiu. Rezerváciu dokončíš priamo u predajcu.",
+    faq_q_1: "Platím MaxiSky nejaký poplatok?",
+    faq_a_1: "Nie. Naša služba je pre teba úplne zadarmo — platíš len cenu letenky u predajcu.",
+    faq_q_2: "V akej mene sú ceny?",
+    faq_a_2: "Ceny zobrazujeme v eurách (€).",
+    faq_q_3: "Ako zaplatím a kde dostanem letenku?",
+    faq_a_3: "Platbu aj letenku vybavuje predajca, ku ktorému ťa presmerujeme. Letenku ti pošle e-mailom.",
+    faq_q_4: "Dajú sa hľadať aj spiatočné lety?",
+    faq_a_4: "Áno — jednosmerné aj spiatočné lety.",
+    ft_slogan: "Lacné letenky pre tvoje cesty.",
+    ft_about: "O nás", ft_faq: "Časté otázky", ft_privacy: "Ochrana súkromia", ft_contact: "Kontakt",
+    ft_copy: "© 2026 MaxiSky · Porovnávač leteniek",
+  },
+  en: {
+    lang_cs: "Čeština", lang_sk: "Slovenčina", lang_en: "English",
+    nav_stay: "Accommodation",
+    hero_eyebrow: "Cheap flights · 300+ airlines",
+    hero_title_pre: "Your journey", hero_title_mid: "starts", hero_title_accent: "here.",
+    hero_lead: "Compare hundreds of airlines at once and book your flight at the best price. No hidden fees, in euros.",
+    trip_round: "Round trip", trip_oneway: "One way",
+    f_from: "From", f_to: "To", f_depart: "Departure", f_return: "Return", f_pax: "Passengers",
+    swap_aria: "Swap",
+    adults_1: "1 adult", adults_2: "2 adults", adults_3: "3 adults", adults_4: "4 adults",
+    search_btn: "Search flights →",
+    hint_fromto: "Enter where you're flying from and to.", hint_depart: "Select a departure date.",
+    chips_label: "Popular:",
+    pop_prg_lon: "Prague → London", pop_prg_bcn: "Prague → Barcelona", pop_bts_lon: "Bratislava → London",
+    pop_vie_fco: "Vienna → Rome", pop_vie_cdg: "Vienna → Paris",
+    why_aria: "Why MaxiSky",
+    why1_h: "300+ airlines", why1_p: "We compare hundreds of carriers at once",
+    why2_h: "No hidden fees", why2_p: "The price you see is the price you pay",
+    why3_h: "Secure booking", why3_p: "You buy from verified sellers",
+    why4_h: "Fast and free", why4_p: "Our service costs you nothing extra",
+    val1_h: "300+ airlines at once", val1_p: "A single search compares full-service and low-cost carriers and finds the cheapest combination.",
+    val2_h: "Prices in euros, no surcharges", val2_p: "You see a fair price upfront. No hidden fees at the end of booking.",
+    val3_h: "Book in a few minutes", val3_p: "Pick a flight and complete the booking directly with a verified seller. Fast and secure.",
+    dst_h: "Popular destinations", dst_sub: "Click to search flights",
+    dest_LON: "London", dest_BCN: "Barcelona", dest_FCO: "Rome", dest_CDG: "Paris",
+    faq_h: "FAQ", faq_sub: "Everything you need to know",
+    faq_q_0: "How does MaxiSky work?",
+    faq_a_0: "We compare offers from 300+ airlines and sellers and redirect you to the best one. You complete the booking directly with the seller.",
+    faq_q_1: "Do I pay MaxiSky any fee?",
+    faq_a_1: "No. Our service is completely free for you — you only pay the ticket price at the seller.",
+    faq_q_2: "What currency are the prices in?",
+    faq_a_2: "We show prices in euros (€).",
+    faq_q_3: "How do I pay and where do I get my ticket?",
+    faq_a_3: "Payment and the ticket are handled by the seller we redirect you to. They will email you the ticket.",
+    faq_q_4: "Can I search round-trip flights too?",
+    faq_a_4: "Yes — both one-way and round-trip flights.",
+    ft_slogan: "Cheap flights for your travels.",
+    ft_about: "About us", ft_faq: "FAQ", ft_privacy: "Privacy policy", ft_contact: "Contact",
+    ft_copy: "© 2026 MaxiSky · Flight comparison",
+  },
+};
+
+function getInitialLang() {
+  try {
+    const saved = localStorage.getItem("maxisky_lang");
+    if (saved && translations[saved]) return saved;
+  } catch (e) { /* localStorage unavailable */ }
+  return "cs";
+}
 
 const STYLES = `
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@600&display=swap');
@@ -78,6 +211,22 @@ const STYLES = `
 .nav-link { font-size:14px; color:var(--mist); font-weight:600; text-decoration:none;
   padding:8px 14px; border-radius:9px; border:1px solid var(--line2); transition:.15s; }
 .nav-link:hover { color:var(--white); border-color:var(--green); }
+.lang { position:relative; }
+.lang-btn { font-size:13px; color:var(--mist); font-weight:600; letter-spacing:.3px;
+  background:transparent; border:1px solid var(--line2); border-radius:9px; padding:8px 12px;
+  display:flex; align-items:center; gap:7px; transition:.15s; }
+.lang-btn b { color:var(--white); }
+.lang-btn:hover { border-color:var(--green); }
+.lang-btn .caret { font-size:9px; line-height:1; color:var(--mist); transition:transform .15s; }
+.lang-btn.open .caret { transform:rotate(180deg); }
+.lang-menu { position:absolute; top:calc(100% + 6px); right:0; z-index:30;
+  background:var(--navy2); border:1px solid var(--line2); border-radius:11px; padding:6px;
+  min-width:152px; box-shadow:0 16px 38px rgba(0,0,0,.42);
+  display:flex; flex-direction:column; gap:2px; }
+.lang-menu button { text-align:left; font-size:13.5px; font-weight:600; color:var(--mist);
+  background:transparent; border:none; border-radius:8px; padding:9px 12px; transition:.15s; }
+.lang-menu button:hover { color:var(--white); background:rgba(255,255,255,.06); }
+.lang-menu button.on { color:var(--white); background:rgba(59,130,246,.16); }
 
 /* ── hero ── */
 .hero { position:relative; max-width:1140px; margin:0 auto; padding:38px 22px 8px; }
@@ -229,13 +378,37 @@ export default function App() {
   const [adults, setAdults] = useState(1);
   const [hint, setHint] = useState("");
   const [openFaq, setOpenFaq] = useState(null);
+  const [lang, setLang] = useState(getInitialLang);
+  const [langOpen, setLangOpen] = useState(false);
   const formRef = useRef(null);
+  const langRef = useRef(null);
+
+  const t = (key) =>
+    (translations[lang] && translations[lang][key]) || translations.cs[key] || key;
+
+  const changeLang = (l) => {
+    setLang(l);
+    try { localStorage.setItem("maxisky_lang", l); } catch (e) { /* ignore */ }
+    setLangOpen(false);
+  };
+
+  // klik mimo prepínača jazyka ho zatvorí
+  useEffect(() => {
+    if (!langOpen) return;
+    const onDoc = (e) => {
+      if (langRef.current && !langRef.current.contains(e.target)) setLangOpen(false);
+    };
+    document.addEventListener("mousedown", onDoc);
+    return () => document.removeEventListener("mousedown", onDoc);
+  }, [langOpen]);
+
+  const currentShort = (LANGS.find((l) => l.code === lang) || LANGS[0]).short;
 
   const swap = () => { setFrom(to); setTo(from); };
 
   const search = () => {
-    if (!from.trim() || !to.trim()) { setHint("Zadaj odkiaľ aj kam letíš."); return; }
-    if (!depart) { setHint("Vyber dátum odletu."); return; }
+    if (!from.trim() || !to.trim()) { setHint(t("hint_fromto")); return; }
+    if (!depart) { setHint(t("hint_depart")); return; }
     setHint("");
     const url = buildWlUrl({ from, to, depart, ret: oneWay ? "" : ret, adults });
     window.location.href = url;
@@ -263,8 +436,25 @@ export default function App() {
       <nav className="nav">
         <div className="logo"><img src="/logo.svg" alt="MaxiSky" style={{ height: 40, width: "auto", display: "block" }} /></div>
         <span className="nav-sp" />
-        <span className="nav-meta"><b>SK</b> · <b>EUR</b></span>
-        <a className="nav-link" href={WL}>Ubytovanie</a>
+        <div className="lang" ref={langRef}>
+          <button className={"lang-btn" + (langOpen ? " open" : "")} aria-haspopup="true"
+            aria-expanded={langOpen} onClick={() => setLangOpen((o) => !o)}>
+            <span><b>{currentShort}</b> · <b>EUR</b></span>
+            <span className="caret" aria-hidden="true">▾</span>
+          </button>
+          {langOpen && (
+            <div className="lang-menu" role="menu">
+              {LANGS.map((l) => (
+                <button key={l.code} role="menuitem"
+                  className={l.code === lang ? "on" : ""}
+                  onClick={() => changeLang(l.code)}>
+                  {t(l.labelKey)}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+        <a className="nav-link" href={STAY}>{t("nav_stay")}</a>
       </nav>
 
       {/* hero */}
@@ -277,9 +467,9 @@ export default function App() {
           </g>
         </svg>
         <div className="hero-in">
-          <span className="eyebrow">✦ Lacné letenky · 300+ aeroliniek</span>
-          <h1 className="h1">Vaša cesta<br />začína <span className="accent">tu.</span></h1>
-          <p className="lead">Porovnaj stovky aeroliniek naraz a rezervuj letenku za najlepšiu cenu. Bez skrytých poplatkov, v eurách.</p>
+          <span className="eyebrow">✦ {t("hero_eyebrow")}</span>
+          <h1 className="h1">{t("hero_title_pre")}<br />{t("hero_title_mid")} <span className="accent">{t("hero_title_accent")}</span></h1>
+          <p className="lead">{t("hero_lead")}</p>
         </div>
       </header>
 
@@ -287,19 +477,19 @@ export default function App() {
       <section className="panel" ref={formRef}>
         <div className="panel-card">
           <div className="trip">
-            <button className={oneWay ? "" : "on"} onClick={() => setOneWay(false)}>Spiatočne</button>
-            <button className={oneWay ? "on" : ""} onClick={() => setOneWay(true)}>Jednosmerne</button>
+            <button className={oneWay ? "" : "on"} onClick={() => setOneWay(false)}>{t("trip_round")}</button>
+            <button className={oneWay ? "on" : ""} onClick={() => setOneWay(true)}>{t("trip_oneway")}</button>
           </div>
 
           <div className="row">
             <div className="fld">
-              <label>Odkiaľ</label>
+              <label>{t("f_from")}</label>
               <input className="code" value={from} maxLength={3}
                 onChange={(e) => setFrom(e.target.value)} placeholder="ZAG" />
             </div>
-            <button className="swap" onClick={swap} aria-label="Vymeniť">⇄</button>
+            <button className="swap" onClick={swap} aria-label={t("swap_aria")}>⇄</button>
             <div className="fld">
-              <label>Kam</label>
+              <label>{t("f_to")}</label>
               <input className="code" value={to} maxLength={3}
                 onChange={(e) => setTo(e.target.value)} placeholder="LON" />
             </div>
@@ -307,48 +497,48 @@ export default function App() {
 
           <div className={"row " + (oneWay ? "two" : "three")}>
             <div className="fld">
-              <label>Odlet</label>
+              <label>{t("f_depart")}</label>
               <input type="date" value={depart} onChange={(e) => setDepart(e.target.value)} />
             </div>
             {!oneWay && (
               <div className="fld">
-                <label>Návrat</label>
+                <label>{t("f_return")}</label>
                 <input type="date" value={ret} onChange={(e) => setRet(e.target.value)} />
               </div>
             )}
             <div className="fld">
-              <label>Cestujúci</label>
+              <label>{t("f_pax")}</label>
               <select value={adults} onChange={(e) => setAdults(Number(e.target.value))}>
-                <option value={1}>1 dospelý</option>
-                <option value={2}>2 dospelí</option>
-                <option value={3}>3 dospelí</option>
-                <option value={4}>4 dospelí</option>
+                <option value={1}>{t("adults_1")}</option>
+                <option value={2}>{t("adults_2")}</option>
+                <option value={3}>{t("adults_3")}</option>
+                <option value={4}>{t("adults_4")}</option>
               </select>
             </div>
           </div>
 
-          <button className="go" onClick={search}>Hľadať lety →</button>
+          <button className="go" onClick={search}>{t("search_btn")}</button>
           <div className="hint">{hint}</div>
 
           <div className="chips">
-            <span className="lbl">Obľúbené:</span>
+            <span className="lbl">{t("chips_label")}</span>
             {POPULAR.map((p) => (
-              <button key={p.label} className="chip" onClick={() => pick(p.from, p.to)}>{p.label}</button>
+              <button key={p.key} className="chip" onClick={() => pick(p.from, p.to)}>{t(p.key)}</button>
             ))}
           </div>
         </div>
       </section>
 
       {/* prečo MaxiSky — pás dôvery */}
-      <section className="why" aria-label="Prečo MaxiSky">
+      <section className="why" aria-label={t("why_aria")}>
         <div className="why-it">
           <div className="ic">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3.5S18 3 16.5 4.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
             </svg>
           </div>
-          <h3>300+ aerolínií</h3>
-          <p>Porovnávame stovky dopravcov naraz</p>
+          <h3>{t("why1_h")}</h3>
+          <p>{t("why1_p")}</p>
         </div>
         <div className="why-it">
           <div className="ic">
@@ -358,8 +548,8 @@ export default function App() {
               <path d="M7 11h5"/><path d="M7 13.2h4"/>
             </svg>
           </div>
-          <h3>Bez skrytých poplatkov</h3>
-          <p>Cena, ktorú vidíš, je cena, ktorú platíš</p>
+          <h3>{t("why2_h")}</h3>
+          <p>{t("why2_p")}</p>
         </div>
         <div className="why-it">
           <div className="ic">
@@ -368,8 +558,8 @@ export default function App() {
               <path d="m9 12 2 2 4-4"/>
             </svg>
           </div>
-          <h3>Bezpečná rezervácia</h3>
-          <p>Nakupuješ u overených predajcov</p>
+          <h3>{t("why3_h")}</h3>
+          <p>{t("why3_p")}</p>
         </div>
         <div className="why-it">
           <div className="ic">
@@ -377,8 +567,8 @@ export default function App() {
               <path d="M13 2 3 14h8l-1 8 11-13h-8l1-7z"/>
             </svg>
           </div>
-          <h3>Rýchlo a zdarma</h3>
-          <p>Naša služba ťa nestojí nič navyše</p>
+          <h3>{t("why4_h")}</h3>
+          <p>{t("why4_p")}</p>
         </div>
       </section>
 
@@ -386,26 +576,26 @@ export default function App() {
       <section className="vals">
         <div className="val">
           <div className="ic">◎</div>
-          <h3>300+ aeroliniek naraz</h3>
-          <p>Jedno hľadanie porovná klasické aj nízkonákladové spoločnosti a nájde najlacnejšiu kombináciu.</p>
+          <h3>{t("val1_h")}</h3>
+          <p>{t("val1_p")}</p>
         </div>
         <div className="val">
           <div className="ic">€</div>
-          <h3>Ceny v eurách, bez prirážok</h3>
-          <p>Vidíš férovú cenu vopred. Žiadne skryté poplatky na konci rezervácie.</p>
+          <h3>{t("val2_h")}</h3>
+          <p>{t("val2_p")}</p>
         </div>
         <div className="val">
           <div className="ic">⚡</div>
-          <h3>Rezervácia za pár minút</h3>
-          <p>Vyber let a dokonči rezerváciu priamo u overeného predajcu. Rýchlo a bezpečne.</p>
+          <h3>{t("val3_h")}</h3>
+          <p>{t("val3_p")}</p>
         </div>
       </section>
 
       {/* destinations */}
       <section className="dst-wrap">
         <div className="sec-h">
-          <h2>Obľúbené destinácie</h2>
-          <span>Klikni a vyhľadaj lety</span>
+          <h2>{t("dst_h")}</h2>
+          <span>{t("dst_sub")}</span>
         </div>
         <div className="dst-grid">
           {DESTS.map((d) => (
@@ -423,7 +613,7 @@ export default function App() {
                 <span className="code">{d.code}</span>
               </div>
               <div className="meta">
-                <span className="city">{d.city}</span>
+                <span className="city">{t("dest_" + d.code)}</span>
                 <span className="arr">→</span>
               </div>
             </button>
@@ -434,21 +624,21 @@ export default function App() {
       {/* časté otázky — akordeón */}
       <section className="faq">
         <div className="sec-h">
-          <h2>Časté otázky</h2>
-          <span>Všetko, čo potrebuješ vedieť</span>
+          <h2>{t("faq_h")}</h2>
+          <span>{t("faq_sub")}</span>
         </div>
         <div className="faq-list">
-          {FAQ.map((item, i) => {
+          {FAQ_KEYS.map((i) => {
             const open = openFaq === i;
             return (
-              <div key={item.q} className={"faq-it" + (open ? " open" : "")}>
+              <div key={i} className={"faq-it" + (open ? " open" : "")}>
                 <button className="faq-q" aria-expanded={open}
                   onClick={() => setOpenFaq(open ? null : i)}>
-                  <span>{item.q}</span>
+                  <span>{t("faq_q_" + i)}</span>
                   <span className="sign" aria-hidden="true">+</span>
                 </button>
                 <div className="faq-a">
-                  <p>{item.a}</p>
+                  <p>{t("faq_a_" + i)}</p>
                 </div>
               </div>
             );
@@ -461,18 +651,18 @@ export default function App() {
         <div className="site-ft-in">
           <div className="brand">
             <div className="logo"><span className="pin"><span className="plane">✈</span></span><span className="word">Maxi<span className="hl">S</span>ky</span></div>
-            <p>Lacné letenky pre tvoje cesty.</p>
+            <p>{t("ft_slogan")}</p>
           </div>
-          <nav className="site-ft-links" aria-label="Pätička">
-            <a href="#">O nás</a>
-            <a href="#">Časté otázky</a>
-            <a href="#">Ochrana súkromia</a>
-            <a href="#">Kontakt</a>
+          <nav className="site-ft-links" aria-label={t("faq_h")}>
+            <a href="#">{t("ft_about")}</a>
+            <a href="#">{t("ft_faq")}</a>
+            <a href="#">{t("ft_privacy")}</a>
+            <a href="#">{t("ft_contact")}</a>
           </nav>
         </div>
         <div className="site-ft-bot">
           <div>
-            <p>© 2026 MaxiSky · Porovnávač leteniek</p>
+            <p>{t("ft_copy")}</p>
           </div>
         </div>
       </footer>
