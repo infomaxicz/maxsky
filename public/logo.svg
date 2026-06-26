@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 130" fill="none">
+  <defs>
+    <linearGradient id="msTile" x1="14" y1="16" x2="110" y2="114" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#60A5FA"/>
+      <stop offset="0.55" stop-color="#3B82F6"/>
+      <stop offset="1" stop-color="#2563EB"/>
+    </linearGradient>
+  </defs>
+
+  <!-- app icon -->
+  <rect x="14" y="16" width="98" height="98" rx="24" fill="url(#msTile)"/>
+
+  <!-- plane (top view, pointing up) -->
+  <path fill="#15202C" d="M63 30
+    C64 30 65 31 65.6 34
+    L67 60
+    L101 78 L101 84 L67 72
+    L66 96 L78 105 L78 109 L63 104
+    L48 109 L48 105 L60 96 L59 72
+    L25 84 L25 78 L59 60
+    L60.4 34
+    C61 31 62 30 63 30 Z"/>
+
+  <!-- wordmark -->
+  <text x="132" y="93" font-family="'Helvetica Neue',Arial,sans-serif"
+        font-weight="800" font-size="82" letter-spacing="-2">
+    <tspan fill="#FFFFFF">Maxi</tspan><tspan fill="#3B82F6">S</tspan><tspan fill="#FFFFFF">ky</tspan>
+  </text>
+</svg>
