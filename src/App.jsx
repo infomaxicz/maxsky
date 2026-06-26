@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 // ─────────────────────────────────────────────────────────────
 // Skysell — maxisky.eu landing
@@ -230,6 +230,18 @@ export default function App() {
   const [hint, setHint] = useState("");
   const [openFaq, setOpenFaq] = useState(null);
   const formRef = useRef(null);
+  const priceWidgetRef = useRef(null);
+
+  useEffect(() => {
+    const container = priceWidgetRef.current;
+    if (!container) return;
+    const script = document.createElement("script");
+    script.src = "https://tpwgts.com/content?currency=eur&trs=542813&shmarker=742946&destination=PRG&target_host=www.aviasales.com%2Fsearch&locale=sk&limit=8&powered_by=false&primary=%233B82F6&promo_id=4044&campaign_id=100";
+    script.async = true;
+    script.charset = "utf-8";
+    container.appendChild(script);
+    return () => { container.innerHTML = ""; };
+  }, []);
 
   const swap = () => { setFrom(to); setTo(from); };
 
@@ -417,6 +429,15 @@ export default function App() {
             </button>
           ))}
         </div>
+      </section>
+
+      {/* lacné letenky do Prahy — živé ceny */}
+      <section className="dst-wrap">
+        <div className="sec-h">
+          <h2>Lacné letenky do Prahy</h2>
+          <span>Aktuálne najnižšie ceny — klikni a rezervuj</span>
+        </div>
+        <div ref={priceWidgetRef} />
       </section>
 
       {/* časté otázky — akordeón */}
