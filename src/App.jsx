@@ -8,7 +8,6 @@ import React, { useState, useRef, useEffect } from "react";
 // ─────────────────────────────────────────────────────────────
 
 const WL = "https://fly.maxisky.eu/flights/";
-const STAY = "https://stay.maxisky.eu";
 
 function buildWlUrl({ from, to, depart, ret, adults }) {
   const params = new URLSearchParams({
@@ -88,7 +87,7 @@ const translations = {
     faq_q_4: "Dají se hledat i zpáteční lety?",
     faq_a_4: "Ano — jednosměrné i zpáteční lety.",
     ft_slogan: "Levné letenky pro tvé cesty.",
-    ft_about: "O nás", ft_faq: "Časté dotazy", ft_privacy: "Ochrana soukromí", ft_contact: "Kontakt",
+    ft_terms: "Obchodní podmínky", ft_privacy: "Ochrana osobních údajů", ft_cookies: "Zásady cookies",
     ft_copy: "© 2026 MaxiSky · Porovnávač letenek",
   },
   sk: {
@@ -128,7 +127,7 @@ const translations = {
     faq_q_4: "Dajú sa hľadať aj spiatočné lety?",
     faq_a_4: "Áno — jednosmerné aj spiatočné lety.",
     ft_slogan: "Lacné letenky pre tvoje cesty.",
-    ft_about: "O nás", ft_faq: "Časté otázky", ft_privacy: "Ochrana súkromia", ft_contact: "Kontakt",
+    ft_terms: "Obchodné podmienky", ft_privacy: "Ochrana osobných údajov", ft_cookies: "Zásady cookies",
     ft_copy: "© 2026 MaxiSky · Porovnávač leteniek",
   },
   en: {
@@ -168,7 +167,7 @@ const translations = {
     faq_q_4: "Can I search round-trip flights too?",
     faq_a_4: "Yes — both one-way and round-trip flights.",
     ft_slogan: "Cheap flights for your travels.",
-    ft_about: "About us", ft_faq: "FAQ", ft_privacy: "Privacy policy", ft_contact: "Contact",
+    ft_terms: "Terms & Conditions", ft_privacy: "Privacy Policy", ft_cookies: "Cookie Policy",
     ft_copy: "© 2026 MaxiSky · Flight comparison",
   },
 };
@@ -454,7 +453,8 @@ export default function App() {
             </div>
           )}
         </div>
-        <a className="nav-link" href={STAY}>{t("nav_stay")}</a>
+        <button className="nav-link" type="button" disabled title="Čoskoro"
+          style={{ cursor: "not-allowed", opacity: 0.6 }}>{t("nav_stay")}</button>
       </nav>
 
       {/* hero */}
@@ -654,10 +654,9 @@ export default function App() {
             <p>{t("ft_slogan")}</p>
           </div>
           <nav className="site-ft-links" aria-label={t("faq_h")}>
-            <a href="#">{t("ft_about")}</a>
-            <a href="#">{t("ft_faq")}</a>
-            <a href="#">{t("ft_privacy")}</a>
-            <a href="#">{t("ft_contact")}</a>
+            <a href="/terms.html" target="_blank" rel="noopener">{t("ft_terms")}</a>
+            <a href="/privacy.html" target="_blank" rel="noopener">{t("ft_privacy")}</a>
+            <a href="/cookies.html" target="_blank" rel="noopener">{t("ft_cookies")}</a>
           </nav>
         </div>
         <div className="site-ft-bot">
