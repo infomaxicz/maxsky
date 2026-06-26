@@ -254,7 +254,7 @@ export default function App() {
 
       {/* nav */}
       <nav className="nav">
-        <div className="logo"><span className="pin"><span className="plane">✈</span></span><span className="word">Maxi<span className="hl">S</span>ky</span></div>
+        <div className="logo"><img src="/logo.svg" alt="MaxiSky" style={{ height: 40, width: "auto", display: "block" }} /></div>
         <span className="nav-sp" />
         <span className="nav-meta"><b>SK</b> · <b>EUR</b></span>
         <a className="nav-link" href={WL}>Ubytovanie</a>
