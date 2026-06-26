@@ -248,6 +248,13 @@ export default function App() {
     formRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
+  // Karta destinácie: nastaví IBA cieľ (Kam), origin nechá na zákazníka.
+  const pickDest = (code) => {
+    setTo(code);
+    setHint("");
+    formRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
+
   return (
     <div className="mx">
       <style>{STYLES}</style>
@@ -402,7 +409,12 @@ export default function App() {
         </div>
         <div className="dst-grid">
           {DESTS.map((d) => (
-            <button key={d.code} className="dst" onClick={() => pick("BTS", d.code)}>
+            <button key={d.code} className="dst" type="button"
+              role="button" tabIndex={0} style={{ cursor: "pointer" }}
+              onClick={() => pickDest(d.code)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pickDest(d.code); }
+              }}>
               <div className="img" style={{
                 backgroundImage: `linear-gradient(rgba(21,32,44,0.15), rgba(21,32,44,0.85)), url('/destinations/${d.code}.jpg'), ${d.g}`,
                 backgroundSize: "cover",
