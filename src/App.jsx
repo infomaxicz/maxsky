@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 // ─────────────────────────────────────────────────────────────
 // Skysell — maxisky.eu landing
@@ -38,6 +38,14 @@ const DESTS = [
   { city: "Barcelona", code: "BCN", g: "linear-gradient(150deg,#3a4a3f,#5f8c6a)" },
   { city: "Rím", code: "FCO", g: "linear-gradient(150deg,#4a3f3a,#8c6f5f)" },
   { city: "Paríž", code: "CDG", g: "linear-gradient(150deg,#3a3f4a,#5f6a8c)" },
+];
+
+const FAQ = [
+  { q: "Ako MaxiSky funguje?", a: "Porovnáme ponuky 300+ aerolínií a predajcov a presmerujeme ťa na tú najvýhodnejšiu. Rezerváciu dokončíš priamo u predajcu." },
+  { q: "Platím MaxiSky nejaký poplatok?", a: "Nie. Naša služba je pre teba úplne zadarmo — platíš len cenu letenky u predajcu." },
+  { q: "V akej mene sú ceny?", a: "Ceny zobrazujeme v eurách (€)." },
+  { q: "Ako zaplatím a kde dostanem letenku?", a: "Platbu aj letenku vybavuje predajca, ku ktorému ťa presmerujeme. Letenku ti pošle e-mailom." },
+  { q: "Dajú sa hľadať aj spiatočné lety?", a: "Áno — jednosmerné aj spiatočné lety." },
 ];
 
 const STYLES = `
@@ -129,7 +137,7 @@ const STYLES = `
 .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; align-items:center; }
 .chips .lbl { font-size:12px; color:var(--mist); font-weight:600; margin-right:2px; }
 .chip { font-size:12.5px; font-weight:600; color:#CAD4DF; background:rgba(255,255,255,.05);
-  border:1px solid var(--line2); border-radius:999px; padding:7px 13px; transition:.15s; }
+  border:1px solid var(--line2); border-radius:999px; padding:7px 13px; transition:.15s; cursor:pointer; }
 .chip:hover { color:#fff; background:var(--green); border-color:var(--green); }
 
 /* ── value strip ── */
@@ -158,21 +166,53 @@ const STYLES = `
 .dst .meta .city { font-family:'Sora'; font-weight:600; font-size:15px; color:#fff; }
 .dst .meta .arr { color:var(--green); font-size:16px; }
 
-/* ── footer ── */
-.ft { max-width:1140px; margin:66px auto 0; padding:26px 22px 40px;
-  border-top:1px solid var(--line); display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
-.ft .logo { font-size:17px; }
-.ft-sp { flex:1; }
-.ft p { font-size:12.5px; color:var(--mist); margin:0; }
-.ft a { color:var(--mist); font-size:12.5px; text-decoration:none; }
-.ft a:hover { color:var(--white); }
+/* ── why (pás dôvery) ── */
+.why { max-width:1140px; margin:46px auto 0; padding:0 22px;
+  display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+.why-it { background:var(--navy2); border:1px solid var(--line); border-radius:16px;
+  padding:22px 18px; text-align:left; }
+.why-it .ic { width:46px; height:46px; border-radius:50%; display:grid; place-items:center;
+  background:rgba(59,130,246,.12); color:var(--green); margin-bottom:14px; }
+.why-it .ic svg { width:23px; height:23px; }
+.why-it h3 { font-family:'Sora'; font-weight:700; font-size:15px; margin:0 0 5px; color:var(--white); }
+.why-it p { font-size:13px; color:var(--mist); margin:0; line-height:1.45; }
+
+/* ── faq (akordeón) ── */
+.faq { max-width:780px; margin:64px auto 0; padding:0 22px; }
+.faq-list { display:flex; flex-direction:column; gap:12px; margin-top:18px; }
+.faq-it { background:var(--navy2); border:1px solid var(--line); border-radius:16px; overflow:hidden; }
+.faq-it.open { border-color:var(--line2); }
+.faq-q { width:100%; background:transparent; border:none; text-align:left; color:var(--white);
+  font-family:'Sora'; font-weight:600; font-size:15.5px; line-height:1.35;
+  padding:18px 20px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+.faq-q .sign { color:var(--green); font-size:23px; line-height:1; flex-shrink:0;
+  transition:transform .2s ease; }
+.faq-it.open .faq-q .sign { transform:rotate(45deg); }
+.faq-a { max-height:0; overflow:hidden; transition:max-height .25s ease, padding .25s ease; padding:0 20px; }
+.faq-it.open .faq-a { max-height:260px; padding:0 20px 18px; }
+.faq-a p { font-size:14px; color:var(--mist); margin:0; line-height:1.55; }
+
+/* ── site footer (pätička) ── */
+.site-ft { background:var(--navy2); border-top:1px solid var(--line); margin-top:70px; }
+.site-ft-in { max-width:1140px; margin:0 auto; padding:46px 22px 26px;
+  display:flex; justify-content:space-between; gap:34px; flex-wrap:wrap; }
+.site-ft .brand .logo { font-size:19px; margin-bottom:11px; }
+.site-ft .brand p { font-size:13.5px; color:var(--mist); margin:0; max-width:280px; }
+.site-ft-links { display:flex; flex-direction:column; gap:11px; }
+.site-ft-links a { color:var(--mist); font-size:13.5px; font-weight:500; text-decoration:none; transition:.15s; }
+.site-ft-links a:hover { color:var(--white); }
+.site-ft-bot { border-top:1px solid var(--line); }
+.site-ft-bot div { max-width:1140px; margin:0 auto; padding:18px 22px 38px; }
+.site-ft-bot p { font-size:12.5px; color:var(--mist); margin:0; }
 
 @media (max-width:780px){
   .vals { grid-template-columns:1fr; }
   .dst-grid { grid-template-columns:1fr 1fr; }
+  .why { grid-template-columns:1fr 1fr; }
   .row, .row.two, .row.three { grid-template-columns:1fr; }
   .swap { justify-self:center; transform:rotate(90deg); }
   .swap:hover { transform:rotate(270deg); }
+  .site-ft-in { flex-direction:column; gap:26px; }
 }
 @media (prefers-reduced-motion: reduce){
   .mx *{ transition:none !important; }
@@ -188,6 +228,8 @@ export default function App() {
   const [ret, setRet] = useState("2026-07-21");
   const [adults, setAdults] = useState(1);
   const [hint, setHint] = useState("");
+  const [openFaq, setOpenFaq] = useState(null);
+  const formRef = useRef(null);
 
   const swap = () => { setFrom(to); setTo(from); };
 
@@ -199,7 +241,12 @@ export default function App() {
     window.location.href = url;
   };
 
-  const pick = (f, t) => { setFrom(f); setTo(t); setHint(""); };
+  const pick = (f, t) => {
+    setFrom(f);
+    setTo(t);
+    setHint("");
+    formRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
 
   return (
     <div className="mx">
@@ -230,7 +277,7 @@ export default function App() {
       </header>
 
       {/* search */}
-      <section className="panel">
+      <section className="panel" ref={formRef}>
         <div className="panel-card">
           <div className="trip">
             <button className={oneWay ? "" : "on"} onClick={() => setOneWay(false)}>Spiatočne</button>
@@ -285,6 +332,49 @@ export default function App() {
         </div>
       </section>
 
+      {/* prečo MaxiSky — pás dôvery */}
+      <section className="why" aria-label="Prečo MaxiSky">
+        <div className="why-it">
+          <div className="ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3.5S18 3 16.5 4.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
+            </svg>
+          </div>
+          <h3>300+ aerolínií</h3>
+          <p>Porovnávame stovky dopravcov naraz</p>
+        </div>
+        <div className="why-it">
+          <div className="ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M15.5 9.3A4 4 0 0 0 9 12a4 4 0 0 0 6.5 2.7"/>
+              <path d="M7 11h5"/><path d="M7 13.2h4"/>
+            </svg>
+          </div>
+          <h3>Bez skrytých poplatkov</h3>
+          <p>Cena, ktorú vidíš, je cena, ktorú platíš</p>
+        </div>
+        <div className="why-it">
+          <div className="ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <path d="m9 12 2 2 4-4"/>
+            </svg>
+          </div>
+          <h3>Bezpečná rezervácia</h3>
+          <p>Nakupuješ u overených predajcov</p>
+        </div>
+        <div className="why-it">
+          <div className="ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M13 2 3 14h8l-1 8 11-13h-8l1-7z"/>
+            </svg>
+          </div>
+          <h3>Rýchlo a zdarma</h3>
+          <p>Naša služba ťa nestojí nič navyše</p>
+        </div>
+      </section>
+
       {/* value props */}
       <section className="vals">
         <div className="val">
@@ -329,11 +419,50 @@ export default function App() {
         </div>
       </section>
 
-      {/* footer */}
-      <footer className="ft">
-        <div className="logo"><span className="pin"><span className="plane">✈</span></span><span className="word">Maxi<span className="hl">S</span>ky</span></div>
-        <span className="ft-sp" />
-        <p>Vyhľadávanie leteniek · powered by MaxiSky</p>
+      {/* časté otázky — akordeón */}
+      <section className="faq">
+        <div className="sec-h">
+          <h2>Časté otázky</h2>
+          <span>Všetko, čo potrebuješ vedieť</span>
+        </div>
+        <div className="faq-list">
+          {FAQ.map((item, i) => {
+            const open = openFaq === i;
+            return (
+              <div key={item.q} className={"faq-it" + (open ? " open" : "")}>
+                <button className="faq-q" aria-expanded={open}
+                  onClick={() => setOpenFaq(open ? null : i)}>
+                  <span>{item.q}</span>
+                  <span className="sign" aria-hidden="true">+</span>
+                </button>
+                <div className="faq-a">
+                  <p>{item.a}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* pätička */}
+      <footer className="site-ft">
+        <div className="site-ft-in">
+          <div className="brand">
+            <div className="logo"><span className="pin"><span className="plane">✈</span></span><span className="word">Maxi<span className="hl">S</span>ky</span></div>
+            <p>Lacné letenky pre tvoje cesty.</p>
+          </div>
+          <nav className="site-ft-links" aria-label="Pätička">
+            <a href="#">O nás</a>
+            <a href="#">Časté otázky</a>
+            <a href="#">Ochrana súkromia</a>
+            <a href="#">Kontakt</a>
+          </nav>
+        </div>
+        <div className="site-ft-bot">
+          <div>
+            <p>© 2026 MaxiSky · Porovnávač leteniek</p>
+          </div>
+        </div>
       </footer>
     </div>
   );
