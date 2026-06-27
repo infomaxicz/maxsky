@@ -40,6 +40,17 @@ const DESTS = [
   { code: "CDG", g: "linear-gradient(150deg,#3a3f4a,#5f6a8c)" },
 ];
 
+const AUTO_CITIES = [
+  { labelKey: "auto_city_any", url: "https://www.discovercars.com/?a_aid=maxisky" },
+  { label: "Praha", url: "https://www.discovercars.com/cz/czech-republic/prague/prg?a_aid=maxisky" },
+  { label: "Bratislava", url: "https://www.discovercars.com/cz/slovakia/bratislava/bts?a_aid=maxisky" },
+  { label: "Vídeň", url: "https://www.discovercars.com/cz/austria/vienna/vie?a_aid=maxisky" },
+  { label: "Split", url: "https://www.discovercars.com/cz/croatia/split/spu?a_aid=maxisky" },
+  { label: "Barcelona", url: "https://www.discovercars.com/cz/spain/barcelona/bcn?a_aid=maxisky" },
+  { label: "Řím", url: "https://www.discovercars.com/cz/italy/rome/fco?a_aid=maxisky" },
+  { label: "Londýn", url: "https://www.discovercars.com/cz/united-kingdom/london/lhr?a_aid=maxisky" },
+];
+
 const FAQ_KEYS = [0, 1, 2, 3, 4];
 
 const LANGS = [
@@ -56,7 +67,9 @@ const translations = {
     nav_auto: "Auto a karavan",
     auto_title: "Auto a karavan",
     auto_sub: "Porovnejte půjčovny aut od stovek poskytovatelů na jednom místě.",
-    auto_btn: "Najít auto", auto_praha: "Praha", auto_soon: "Karavany připravujeme.",
+    auto_btn: "Najít auto",
+    auto_pick: "Místo vyzvednutí", auto_city_any: "Jakékoli město",
+    auto_note: "Datum a čas vyberete na další stránce u DiscoverCars.",
     hero_eyebrow: "Levné letenky · 300+ aerolinek",
     hero_title_pre: "Vaše cesta", hero_title_mid: "začíná", hero_title_accent: "tady.",
     hero_lead: "Porovnejte stovky aerolinek najednou a rezervujte letenku za nejlepší cenu. Bez skrytých poplatků, v eurech.",
@@ -101,7 +114,9 @@ const translations = {
     nav_auto: "Auto a karavan",
     auto_title: "Auto a karavan",
     auto_sub: "Porovnaj požičovne áut od stoviek poskytovateľov na jednom mieste.",
-    auto_btn: "Nájsť auto", auto_praha: "Praha", auto_soon: "Karavany pripravujeme.",
+    auto_btn: "Nájsť auto",
+    auto_pick: "Miesto vyzdvihnutia", auto_city_any: "Akékoľvek mesto",
+    auto_note: "Dátum a čas vyberieš na ďalšej stránke u DiscoverCars.",
     hero_eyebrow: "Lacné letenky · 300+ aeroliniek",
     hero_title_pre: "Vaša cesta", hero_title_mid: "začína", hero_title_accent: "tu.",
     hero_lead: "Porovnaj stovky aeroliniek naraz a rezervuj letenku za najlepšiu cenu. Bez skrytých poplatkov, v eurách.",
@@ -146,7 +161,9 @@ const translations = {
     nav_auto: "Car & campervan",
     auto_title: "Car & campervan",
     auto_sub: "Compare car rental from hundreds of providers in one place.",
-    auto_btn: "Find a car", auto_praha: "Prague", auto_soon: "Campervans coming soon.",
+    auto_btn: "Find a car",
+    auto_pick: "Pick-up location", auto_city_any: "Any city",
+    auto_note: "You'll pick dates on the next page at DiscoverCars.",
     hero_eyebrow: "Cheap flights · 300+ airlines",
     hero_title_pre: "Your journey", hero_title_mid: "starts", hero_title_accent: "here.",
     hero_lead: "Compare hundreds of airlines at once and book your flight at the best price. No hidden fees, in euros.",
@@ -307,21 +324,19 @@ const STYLES = `
 .auto { max-width:1140px; margin:54px auto 0; padding:0 22px; }
 .auto-card { background:var(--navy2); border:1px solid var(--line); border-radius:20px;
   padding:30px 26px; }
-.auto-card h2 { font-family:'Sora'; font-weight:700; font-size:24px; letter-spacing:-.6px;
-  margin:0 0 8px; color:var(--white); }
-.auto-card .sub { font-size:14.5px; color:var(--mist); margin:0 0 20px; line-height:1.5; max-width:560px; }
-.auto-cta { display:flex; flex-wrap:wrap; align-items:center; gap:10px; }
+.auto-label { display:block; font-size:10.5px; font-weight:600; letter-spacing:.5px;
+  text-transform:uppercase; color:var(--mist); margin:0 0 8px; }
+.auto-row { display:flex; flex-wrap:wrap; align-items:stretch; gap:10px; }
+.auto-select { flex:1; min-width:220px; background:var(--navy3); color:var(--white);
+  border:1px solid var(--line2); border-radius:13px; padding:13px 14px;
+  font-family:inherit; font-size:15px; font-weight:600; outline:none; transition:border-color .15s; }
+.auto-select:focus { border-color:var(--green); }
 .auto-primary { display:inline-flex; align-items:center; justify-content:center;
-  padding:14px 24px; border-radius:14px; background:var(--green); color:#fff;
+  padding:14px 26px; border-radius:13px; background:var(--green); color:#fff; border:none;
   font-family:'Sora'; font-weight:700; font-size:16px; letter-spacing:-.2px;
   text-decoration:none; transition:.15s; }
 .auto-primary:hover { background:var(--green-d); transform:translateY(-1px); }
-.auto-secondary { display:inline-flex; align-items:center; justify-content:center;
-  padding:13px 18px; border-radius:14px; background:transparent; color:#CAD4DF;
-  border:1px solid var(--line2); font-weight:600; font-size:14.5px;
-  text-decoration:none; transition:.15s; }
-.auto-secondary:hover { color:#fff; background:var(--green); border-color:var(--green); }
-.auto-soon { font-size:12.5px; color:var(--mist); margin:14px 0 0; }
+.auto-note { font-size:12.5px; color:var(--mist); margin:14px 0 0; }
 
 /* ── value strip ── */
 .vals { max-width:1140px; margin:54px auto 0; padding:0 22px;
@@ -414,6 +429,7 @@ export default function App() {
   const [openFaq, setOpenFaq] = useState(null);
   const [lang, setLang] = useState(getInitialLang);
   const [langOpen, setLangOpen] = useState(false);
+  const [autoCity, setAutoCity] = useState(AUTO_CITIES[0].url);
   const formRef = useRef(null);
   const langRef = useRef(null);
 
@@ -571,8 +587,20 @@ export default function App() {
 
       {/* auto a karavan — DiscoverCars */}
       <section className="auto" id="auto">
-        <iframe src="https://www.discovercars.com/?a_aid=maxisky" title="DiscoverCars"
-          style={{ width: "100%", height: 520, border: 0, borderRadius: 20 }} loading="lazy" />
+        <div className="auto-card">
+          <label className="auto-label" htmlFor="dcCity">{t("auto_pick")}</label>
+          <div className="auto-row">
+            <select id="dcCity" className="auto-select" value={autoCity}
+              onChange={(e) => setAutoCity(e.target.value)}>
+              {AUTO_CITIES.map((c) => (
+                <option key={c.url} value={c.url}>{c.labelKey ? t(c.labelKey) : c.label}</option>
+              ))}
+            </select>
+            <button className="auto-primary" type="button"
+              onClick={() => window.open(autoCity, "_blank", "noopener")}>{t("auto_btn")}</button>
+          </div>
+          <p className="auto-note">{t("auto_note")}</p>
+        </div>
       </section>
 
       {/* prečo MaxiSky — pás dôvery */}
