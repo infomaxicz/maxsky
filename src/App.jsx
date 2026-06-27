@@ -8,6 +8,7 @@ import React, { useState, useRef, useEffect } from "react";
 // ─────────────────────────────────────────────────────────────
 
 const WL = "https://fly.maxisky.eu/flights/";
+const AGODA_URL = "https://www.agoda.com/partners/partnersearch.aspx?pcs=1&cid=1967819&hl=cs-cz";
 
 function buildWlUrl({ from, to, depart, ret, adults }) {
   const params = new URLSearchParams({
@@ -72,9 +73,9 @@ const translations = {
     auto_note: "Datum a čas vyberete na další stránce u DiscoverCars.",
     dc_banner_btn: "Hledat auto na DiscoverCars",
     auto_iframe_note: "Vyhledávání běží přes DiscoverCars. Pokud se nenačte, použijte výběr města níže.",
-    stay_badge: "Připravujeme",
+    stay_badge: "Rezervujte ubytování",
     stay_title: "Ubytování s Agodou",
-    stay_desc: "Připravujeme spolupráci s Agodou – brzy u nás vyhledáte a rezervujete ubytování po celém světě. Než to spustíme, můžete hledat přímo na jejich platformě.",
+    stay_desc: "Vyhledejte a rezervujte ubytování po celém světě přes Agodu – hotely, apartmány i resorty za výhodné ceny.",
     stay_brand_sub: "Hotely a ubytování po celém světě",
     stay_preview_cap: "Náhled platformy Agoda",
     stay_cta: "Přejít na Agoda.com",
@@ -128,9 +129,9 @@ const translations = {
     auto_note: "Dátum a čas vyberieš na ďalšej stránke u DiscoverCars.",
     dc_banner_btn: "Hľadať auto na DiscoverCars",
     auto_iframe_note: "Vyhľadávanie beží cez DiscoverCars. Ak sa nenačíta, použite výber mesta nižšie.",
-    stay_badge: "Pripravujeme",
+    stay_badge: "Rezervujte ubytovanie",
     stay_title: "Ubytovanie s Agodou",
-    stay_desc: "Pripravujeme spoluprácu s Agodou – čoskoro u nás vyhľadáte a zarezervujete ubytovanie po celom svete. Kým to spustíme, môžete hľadať priamo na ich platforme.",
+    stay_desc: "Vyhľadajte a zarezervujte ubytovanie po celom svete cez Agodu – hotely, apartmány aj rezorty za výhodné ceny.",
     stay_brand_sub: "Hotely a ubytovanie po celom svete",
     stay_preview_cap: "Náhľad platformy Agoda",
     stay_cta: "Prejsť na Agoda.com",
@@ -184,9 +185,9 @@ const translations = {
     auto_note: "You'll pick dates on the next page at DiscoverCars.",
     dc_banner_btn: "Search cars on DiscoverCars",
     auto_iframe_note: "Search runs via DiscoverCars. If it doesn't load, use the city picker below.",
-    stay_badge: "Coming soon",
+    stay_badge: "Book your stay",
     stay_title: "Stays with Agoda",
-    stay_desc: "We're preparing a partnership with Agoda – soon you'll search and book stays worldwide here. Until then, you can search directly on their platform.",
+    stay_desc: "Search and book stays worldwide via Agoda – hotels, apartments and resorts at great prices.",
     stay_brand_sub: "Hotels & stays worldwide",
     stay_preview_cap: "Agoda platform preview",
     stay_cta: "Go to Agoda.com",
@@ -842,7 +843,7 @@ export default function App() {
             </div>
           </div>
 
-          <a className="stay-cta" href="https://www.agoda.com" target="_blank" rel="noopener">{t("stay_cta")}</a>
+          <a className="stay-cta" href={AGODA_URL} target="_blank" rel="sponsored noopener">{t("stay_cta")}</a>
           <p className="auto-note">{t("stay_note")}</p>
         </div>
       </section>
