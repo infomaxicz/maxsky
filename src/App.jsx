@@ -13,6 +13,9 @@ const INVIA_URL = "https://www.invia.cz/?b_https=1&aid=9227602&data1=tours_all";
 const INVIA_LASTMINUTE = "https://www.invia.cz/dovolena/last-minute/?b_https=1&aid=9227602&data1=tours_lastminute";
 const INVIA_BANNER = "https://affil.invia.cz/direct/core/tool_dynamic-banner/show-banner/id/9227602-6a3fbdae8f2bb/";
 const INVIA_FIRSTMINUTE = "https://www.invia.cz/dovolena/first-minute/?b_https=1&aid=9227602&data1=tours_firstminute";
+const INVIA_EGYPT = "https://www.invia.cz/dovolena/egypt/?b_https=1&aid=9227602&data1=tours_egypt";
+const INVIA_RECKO = "https://www.invia.cz/dovolena/recko/?b_https=1&aid=9227602&data1=tours_recko";
+const INVIA_TURECKO = "https://www.invia.cz/dovolena/turecko/?b_https=1&aid=9227602&data1=tours_turecko";
 const INVIA_FORM = "https://affil.invia.cz/direct/core/tool_search-form/render-form/nl_product_id/1/template/728x90/color_button_bg/3B82F6/color_button_hover_bg/2563EB/color_button_text/FFFFFF/color_form_bg/152033/color_form_text/FFFFFF/color_scrollbar/1B2740/color_select_border/2A3550/aid/9227602/";
 
 function buildWlUrl({ from, to, depart, ret, adults }) {
@@ -100,6 +103,7 @@ const translations = {
     tours_b3: "Stejné ceny jako přímo u cestovní kanceláře",
     tours_b4: "Ověřené recenze a pojištění proti úpadku CK",
     tours_cta_lm: "Hledat Last minute", tours_cta_fm: "First minute", tours_cta_all: "Procházet všechny zájezdy",
+    tours_egypt: "Egypt", tours_recko: "Řecko", tours_turecko: "Turecko",
     tours_form_title: "Vyhledat zájezd", tours_offers_title: "Akční nabídky",
     tours_note: "Otevře se web Invia v nové kartě.",
     hero_eyebrow: "Levné letenky · 300+ aerolinek",
@@ -173,6 +177,7 @@ const translations = {
     tours_b3: "Rovnaké ceny ako priamo u cestovnej kancelárie",
     tours_b4: "Overené recenzie a poistenie proti úpadku CK",
     tours_cta_lm: "Hľadať Last minute", tours_cta_fm: "First minute", tours_cta_all: "Prehliadať všetky zájazdy",
+    tours_egypt: "Egypt", tours_recko: "Grécko", tours_turecko: "Turecko",
     tours_form_title: "Vyhľadať zájazd", tours_offers_title: "Akčné ponuky",
     tours_note: "Otvorí sa web Invia v novej karte.",
     hero_eyebrow: "Lacné letenky · 300+ aeroliniek",
@@ -246,6 +251,7 @@ const translations = {
     tours_b3: "Same prices as booking directly with the agency",
     tours_b4: "Verified reviews and insolvency protection",
     tours_cta_lm: "Search Last minute", tours_cta_fm: "First minute", tours_cta_all: "Browse all tours",
+    tours_egypt: "Egypt", tours_recko: "Greece", tours_turecko: "Turkey",
     tours_form_title: "Search a tour", tours_offers_title: "Featured deals",
     tours_note: "Opens Invia in a new tab.",
     hero_eyebrow: "Cheap flights · 300+ airlines",
@@ -949,6 +955,9 @@ export default function App() {
           <div className="tours-cats">
             <a className="stay-cta" href={INVIA_LASTMINUTE} target="_blank" rel="sponsored noopener">{t("tours_cta_lm")}</a>
             <a className="stay-cta" href={INVIA_FIRSTMINUTE} target="_blank" rel="sponsored noopener">{t("tours_cta_fm")}</a>
+            <a className="stay-cta" href={INVIA_EGYPT} target="_blank" rel="sponsored noopener">{t("tours_egypt")}</a>
+            <a className="stay-cta" href={INVIA_RECKO} target="_blank" rel="sponsored noopener">{t("tours_recko")}</a>
+            <a className="stay-cta" href={INVIA_TURECKO} target="_blank" rel="sponsored noopener">{t("tours_turecko")}</a>
             <a className="stay-cta" href={INVIA_URL} target="_blank" rel="sponsored noopener">{t("tours_cta_all")}</a>
           </div>
 
