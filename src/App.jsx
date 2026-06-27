@@ -484,8 +484,8 @@ const STYLES = `
 .tours-cats { display:flex; flex-wrap:wrap; gap:10px; margin:18px 0; }
 .tours-cats .stay-cta { flex:1; min-width:180px; }
 .tours-form-box { background:var(--navy2); border:1px solid var(--line); border-radius:16px;
-  padding:22px 20px; margin:0 0 22px; }
-.tours-form-box .stay-why-title { margin:0 0 16px; }
+  padding:28px 24px; margin:18px 0 24px; width:100%; }
+.tours-form-box .tours-form-title { font-size:22px; margin:0 0 20px; }
 .tours-offers { margin:0 0 24px; }
 .tours-offers .stay-why-title { margin:0 0 14px; }
 
@@ -952,18 +952,9 @@ export default function App() {
           <h2 className="auto-h">{t("tours_title")}</h2>
           <p className="auto-sub">{t("tours_desc")}</p>
 
-          <div className="tours-cats">
-            <a className="stay-cta" href={INVIA_LASTMINUTE} target="_blank" rel="sponsored noopener">{t("tours_cta_lm")}</a>
-            <a className="stay-cta" href={INVIA_FIRSTMINUTE} target="_blank" rel="sponsored noopener">{t("tours_cta_fm")}</a>
-            <a className="stay-cta" href={INVIA_EGYPT} target="_blank" rel="sponsored noopener">{t("tours_egypt")}</a>
-            <a className="stay-cta" href={INVIA_RECKO} target="_blank" rel="sponsored noopener">{t("tours_recko")}</a>
-            <a className="stay-cta" href={INVIA_TURECKO} target="_blank" rel="sponsored noopener">{t("tours_turecko")}</a>
-            <a className="stay-cta" href={INVIA_URL} target="_blank" rel="sponsored noopener">{t("tours_cta_all")}</a>
-          </div>
-
           <div className="tours-form-box">
-            <h3 className="stay-why-title">{t("tours_form_title")}</h3>
-            <div style={{ width: "100%", maxWidth: "760px", margin: "0 auto" }}>
+            <h3 className="stay-why-title tours-form-title">{t("tours_form_title")}</h3>
+            <div style={{ width: "100%", maxWidth: "100%", margin: "0 auto" }}>
               <iframe src={INVIA_FORM} title="Invia vyhledávání" width="728" height="90" scrolling="no" frameBorder="0"
                 style={{ border: "none", overflow: "hidden", display: "block", width: "100%", height: "90px" }} />
             </div>
@@ -973,6 +964,15 @@ export default function App() {
             <h3 className="stay-why-title">{t("tours_offers_title")}</h3>
             <iframe src={INVIA_BANNER} title="Invia" width="955" height="100" scrolling="no" frameBorder="0"
               style={{ width: "100%", maxWidth: "955px", height: "100px", border: "none", overflow: "hidden", display: "block", margin: "0 auto" }} />
+          </div>
+
+          <div className="tours-cats">
+            <a className="stay-cta" href={INVIA_LASTMINUTE} target="_blank" rel="sponsored noopener">{t("tours_cta_lm")}</a>
+            <a className="stay-cta" href={INVIA_FIRSTMINUTE} target="_blank" rel="sponsored noopener">{t("tours_cta_fm")}</a>
+            <a className="stay-cta" href={INVIA_EGYPT} target="_blank" rel="sponsored noopener">{t("tours_egypt")}</a>
+            <a className="stay-cta" href={INVIA_RECKO} target="_blank" rel="sponsored noopener">{t("tours_recko")}</a>
+            <a className="stay-cta" href={INVIA_TURECKO} target="_blank" rel="sponsored noopener">{t("tours_turecko")}</a>
+            <a className="stay-cta" href={INVIA_URL} target="_blank" rel="sponsored noopener">{t("tours_cta_all")}</a>
           </div>
 
           <h3 className="stay-why-title">{t("tours_why_title")}</h3>
