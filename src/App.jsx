@@ -70,8 +70,15 @@ const translations = {
     auto_btn: "Najít auto",
     auto_pick: "Místo vyzvednutí", auto_city_any: "Jakékoli město",
     auto_note: "Datum a čas vyberete na další stránce u DiscoverCars.",
-    dc_banner_btn: "Hledat auto na DiscoverCars", stay_soon: "Připravujeme.",
+    dc_banner_btn: "Hledat auto na DiscoverCars",
     auto_iframe_note: "Vyhledávání běží přes DiscoverCars. Pokud se nenačte, použijte výběr města níže.",
+    stay_badge: "Připravujeme",
+    stay_title: "Ubytování s Agodou",
+    stay_desc: "Připravujeme spolupráci s Agodou – brzy u nás vyhledáte a rezervujete ubytování po celém světě. Než to spustíme, můžete hledat přímo na jejich platformě.",
+    stay_brand_sub: "Hotely a ubytování po celém světě",
+    stay_preview_cap: "Náhled platformy Agoda",
+    stay_cta: "Přejít na Agoda.com",
+    stay_note: "Otevře se web Agoda v nové kartě.",
     hero_eyebrow: "Levné letenky · 300+ aerolinek",
     hero_title_pre: "Vaše cesta", hero_title_mid: "začíná", hero_title_accent: "tady.",
     hero_lead: "Porovnejte stovky aerolinek najednou a rezervujte letenku za nejlepší cenu. Bez skrytých poplatků, v eurech.",
@@ -119,8 +126,15 @@ const translations = {
     auto_btn: "Nájsť auto",
     auto_pick: "Miesto vyzdvihnutia", auto_city_any: "Akékoľvek mesto",
     auto_note: "Dátum a čas vyberieš na ďalšej stránke u DiscoverCars.",
-    dc_banner_btn: "Hľadať auto na DiscoverCars", stay_soon: "Pripravujeme.",
+    dc_banner_btn: "Hľadať auto na DiscoverCars",
     auto_iframe_note: "Vyhľadávanie beží cez DiscoverCars. Ak sa nenačíta, použite výber mesta nižšie.",
+    stay_badge: "Pripravujeme",
+    stay_title: "Ubytovanie s Agodou",
+    stay_desc: "Pripravujeme spoluprácu s Agodou – čoskoro u nás vyhľadáte a zarezervujete ubytovanie po celom svete. Kým to spustíme, môžete hľadať priamo na ich platforme.",
+    stay_brand_sub: "Hotely a ubytovanie po celom svete",
+    stay_preview_cap: "Náhľad platformy Agoda",
+    stay_cta: "Prejsť na Agoda.com",
+    stay_note: "Otvorí sa web Agoda v novej karte.",
     hero_eyebrow: "Lacné letenky · 300+ aeroliniek",
     hero_title_pre: "Vaša cesta", hero_title_mid: "začína", hero_title_accent: "tu.",
     hero_lead: "Porovnaj stovky aeroliniek naraz a rezervuj letenku za najlepšiu cenu. Bez skrytých poplatkov, v eurách.",
@@ -168,8 +182,15 @@ const translations = {
     auto_btn: "Find a car",
     auto_pick: "Pick-up location", auto_city_any: "Any city",
     auto_note: "You'll pick dates on the next page at DiscoverCars.",
-    dc_banner_btn: "Search cars on DiscoverCars", stay_soon: "Coming soon.",
+    dc_banner_btn: "Search cars on DiscoverCars",
     auto_iframe_note: "Search runs via DiscoverCars. If it doesn't load, use the city picker below.",
+    stay_badge: "Coming soon",
+    stay_title: "Stays with Agoda",
+    stay_desc: "We're preparing a partnership with Agoda – soon you'll search and book stays worldwide here. Until then, you can search directly on their platform.",
+    stay_brand_sub: "Hotels & stays worldwide",
+    stay_preview_cap: "Agoda platform preview",
+    stay_cta: "Go to Agoda.com",
+    stay_note: "Opens Agoda in a new tab.",
     hero_eyebrow: "Cheap flights · 300+ airlines",
     hero_title_pre: "Your journey", hero_title_mid: "starts", hero_title_accent: "here.",
     hero_lead: "Compare hundreds of airlines at once and book your flight at the best price. No hidden fees, in euros.",
@@ -371,6 +392,25 @@ const STYLES = `
   text-decoration:none; transition:.15s; }
 .auto-primary:hover { background:var(--green-d); transform:translateY(-1px); }
 .auto-note { font-size:12.5px; color:var(--mist); margin:14px 0 0; }
+
+/* ── ubytovanie (stay) ── */
+.stay-badge { display:inline-block; font-size:11px; font-weight:700; letter-spacing:.8px;
+  text-transform:uppercase; color:var(--green); background:rgba(59,130,246,.12);
+  border:1px solid rgba(59,130,246,.28); padding:6px 12px; border-radius:999px; margin-bottom:16px; }
+.stay-preview { margin:22px 0 24px; border:1px solid var(--line2); border-radius:16px;
+  overflow:hidden; background:var(--navy3); box-shadow:0 16px 40px rgba(0,0,0,.30); }
+.stay-preview-bar { display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;
+  padding:16px 20px; border-bottom:1px solid var(--line2); background:var(--navy2); }
+.stay-logo { font-family:'Sora'; font-weight:800; font-size:24px; letter-spacing:-.5px; color:#1d62f0; }
+.stay-brand-sub { font-size:12.5px; color:var(--mist); font-weight:500; }
+.stay-preview-body { display:grid; place-items:center; min-height:200px; padding:30px 20px;
+  text-align:center; color:#5b6b7e; font-family:'Sora'; font-weight:600; font-size:15px;
+  background:linear-gradient(150deg,#e8eef6,#cdd9ea); }
+.stay-cta { display:inline-flex; align-items:center; justify-content:center;
+  padding:14px 26px; border-radius:13px; background:var(--green); color:#fff;
+  font-family:'Sora'; font-weight:700; font-size:16px; letter-spacing:-.2px;
+  text-decoration:none; transition:.15s; }
+.stay-cta:hover { background:var(--green-d); transform:translateY(-1px); }
 
 /* ── value strip ── */
 .vals { max-width:1140px; margin:54px auto 0; padding:0 22px;
@@ -788,8 +828,22 @@ export default function App() {
       {page === "stay" && (
       <section className="auto">
         <div className="auto-card">
-          <h2 className="auto-h">{t("nav_stay")}</h2>
-          <p className="auto-sub" style={{ margin: 0 }}>{t("stay_soon")}</p>
+          <span className="stay-badge">{t("stay_badge")}</span>
+          <h2 className="auto-h">{t("stay_title")}</h2>
+          <p className="auto-sub">{t("stay_desc")}</p>
+
+          <div className="stay-preview">
+            <div className="stay-preview-bar">
+              <span className="stay-logo">agoda</span>
+              <span className="stay-brand-sub">{t("stay_brand_sub")}</span>
+            </div>
+            <div className="stay-preview-body">
+              <span>{t("stay_preview_cap")}</span>
+            </div>
+          </div>
+
+          <a className="stay-cta" href="https://www.agoda.com" target="_blank" rel="noopener">{t("stay_cta")}</a>
+          <p className="auto-note">{t("stay_note")}</p>
         </div>
       </section>
       )}
