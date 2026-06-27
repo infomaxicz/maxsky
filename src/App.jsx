@@ -71,6 +71,7 @@ const translations = {
     auto_pick: "Místo vyzvednutí", auto_city_any: "Jakékoli město",
     auto_note: "Datum a čas vyberete na další stránce u DiscoverCars.",
     dc_banner_btn: "Hledat auto na DiscoverCars", stay_soon: "Připravujeme.",
+    auto_iframe_note: "Vyhledávání běží přes DiscoverCars. Pokud se nenačte, použijte výběr města níže.",
     hero_eyebrow: "Levné letenky · 300+ aerolinek",
     hero_title_pre: "Vaše cesta", hero_title_mid: "začíná", hero_title_accent: "tady.",
     hero_lead: "Porovnejte stovky aerolinek najednou a rezervujte letenku za nejlepší cenu. Bez skrytých poplatků, v eurech.",
@@ -119,6 +120,7 @@ const translations = {
     auto_pick: "Miesto vyzdvihnutia", auto_city_any: "Akékoľvek mesto",
     auto_note: "Dátum a čas vyberieš na ďalšej stránke u DiscoverCars.",
     dc_banner_btn: "Hľadať auto na DiscoverCars", stay_soon: "Pripravujeme.",
+    auto_iframe_note: "Vyhľadávanie beží cez DiscoverCars. Ak sa nenačíta, použite výber mesta nižšie.",
     hero_eyebrow: "Lacné letenky · 300+ aeroliniek",
     hero_title_pre: "Vaša cesta", hero_title_mid: "začína", hero_title_accent: "tu.",
     hero_lead: "Porovnaj stovky aeroliniek naraz a rezervuj letenku za najlepšiu cenu. Bez skrytých poplatkov, v eurách.",
@@ -167,6 +169,7 @@ const translations = {
     auto_pick: "Pick-up location", auto_city_any: "Any city",
     auto_note: "You'll pick dates on the next page at DiscoverCars.",
     dc_banner_btn: "Search cars on DiscoverCars", stay_soon: "Coming soon.",
+    auto_iframe_note: "Search runs via DiscoverCars. If it doesn't load, use the city picker below.",
     hero_eyebrow: "Cheap flights · 300+ airlines",
     hero_title_pre: "Your journey", hero_title_mid: "starts", hero_title_accent: "here.",
     hero_lead: "Compare hundreds of airlines at once and book your flight at the best price. No hidden fees, in euros.",
@@ -250,10 +253,10 @@ const STYLES = `
 .nav-sp { flex:1; }
 .nav-meta { font-size:13px; color:var(--mist); font-weight:600; letter-spacing:.3px; }
 .nav-meta b { color:var(--white); }
-.nav-link { font-size:14px; color:var(--mist); font-weight:600; text-decoration:none;
-  padding:8px 14px; border-radius:9px; border:1px solid var(--line2); transition:.15s; }
-.nav-link:hover { color:var(--white); border-color:var(--green); }
-.nav-link.on { color:var(--white); border-color:var(--green); background:rgba(59,130,246,.12); }
+.nav-link { font-size:14px; color:var(--white); font-weight:600; text-decoration:none;
+  padding:8px 14px; border-radius:10px; border:1px solid transparent; transition:.15s; }
+.nav-link:hover { color:var(--white); background:rgba(255,255,255,.08); }
+.nav-link.on { color:var(--white); border:1px solid rgba(255,255,255,.6); border-radius:10px; }
 .lang { position:relative; }
 .lang-btn { font-size:13px; color:var(--mist); font-weight:600; letter-spacing:.3px;
   background:transparent; border:1px solid var(--line2); border-radius:9px; padding:8px 12px;
@@ -337,15 +340,9 @@ const STYLES = `
 .auto-h { font-family:'Sora'; font-weight:700; font-size:26px; letter-spacing:-.6px;
   margin:0 0 8px; color:var(--white); }
 .auto-sub { font-size:15px; color:var(--mist); margin:0 0 20px; line-height:1.5; max-width:600px; }
-.dc-banner { display:flex; align-items:center; justify-content:center; text-align:center;
-  width:100%; padding:30px 24px; margin:0 0 18px; border-radius:18px;
-  background:linear-gradient(120deg,var(--green),var(--green-d)); color:#fff;
-  font-family:'Sora'; font-weight:800; font-size:19px; letter-spacing:-.3px;
-  text-decoration:none; border:1px solid var(--line2);
-  box-shadow:0 16px 40px rgba(37,99,235,.28); transition:.15s; }
-.dc-banner:hover { transform:translateY(-2px); box-shadow:0 20px 48px rgba(37,99,235,.36); }
 .auto-card { background:var(--navy2); border:1px solid var(--line); border-radius:20px;
   padding:30px 26px; }
+.auto-frame { padding:14px; margin-bottom:14px; }
 .auto-label { display:block; font-size:10.5px; font-weight:600; letter-spacing:.5px;
   text-transform:uppercase; color:var(--mist); margin:0 0 8px; }
 .auto-row { display:flex; flex-wrap:wrap; align-items:stretch; gap:10px; }
@@ -749,8 +746,12 @@ export default function App() {
       <section className="auto" id="auto">
         <h2 className="auto-h">{t("auto_title")}</h2>
         <p className="auto-sub">{t("auto_sub")}</p>
-        <a className="dc-banner" href="https://www.discovercars.com/?a_aid=maxisky"
-          target="_blank" rel="sponsored noopener">{t("dc_banner_btn")}</a>
+        <div className="auto-card auto-frame">
+          <iframe src="https://www.discovercars.com/?a_aid=maxisky" title="DiscoverCars"
+            loading="lazy"
+            style={{ width: "100%", height: 560, border: 0, borderRadius: 16, display: "block" }} />
+          <p className="auto-note">{t("auto_iframe_note")}</p>
+        </div>
         <div className="auto-card">
           <label className="auto-label" htmlFor="dcCity">{t("auto_pick")}</label>
           <div className="auto-row">
