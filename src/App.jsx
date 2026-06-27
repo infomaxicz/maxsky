@@ -9,6 +9,9 @@ import React, { useState, useRef, useEffect } from "react";
 
 const WL = "https://fly.maxisky.eu/flights/";
 const AGODA_URL = "https://www.agoda.com/partners/partnersearch.aspx?pcs=1&cid=1967819&hl=cs-cz";
+const INVIA_URL = "https://www.invia.cz/?b_https=1&aid=9227602";
+const INVIA_LASTMINUTE = "https://www.invia.cz/dovolena/last-minute/?b_https=1&aid=9227602";
+const INVIA_BANNER = "https://affil.invia.cz/direct/core/tool_dynamic-banner/show-banner/id/9227602-6a3fbdae8f2bb/";
 
 function buildWlUrl({ from, to, depart, ret, adults }) {
   const params = new URLSearchParams({
@@ -89,13 +92,12 @@ const translations = {
     tours_title: "Zájezdy a Last minute s Invia",
     tours_desc: "Připravujeme spolupráci s Invia – porovnání zájezdů a last minute od více než 120 cestovních kanceláří na jednom místě. Než to spustíme, můžete hledat přímo u nich.",
     tours_brand_sub: "Zájezdy a last minute od 120+ CK",
-    tours_preview_cap: "Náhled platformy Invia",
     tours_why_title: "Proč Invia",
     tours_b1: "Více než 120 cestovních kanceláří na jednom místě",
     tours_b2: "Last minute i first minute za skvělé ceny",
     tours_b3: "Stejné ceny jako přímo u cestovní kanceláře",
     tours_b4: "Ověřené recenze a pojištění proti úpadku CK",
-    tours_cta: "Hledat zájezd na Invia",
+    tours_cta_lm: "Hledat Last minute", tours_cta_all: "Procházet všechny zájezdy",
     tours_note: "Otevře se web Invia v nové kartě.",
     hero_eyebrow: "Levné letenky · 300+ aerolinek",
     hero_title_pre: "Vaše cesta", hero_title_mid: "začíná", hero_title_accent: "tady.",
@@ -162,13 +164,12 @@ const translations = {
     tours_title: "Zájazdy a Last minute s Invia",
     tours_desc: "Pripravujeme spoluprácu s Invia – porovnanie zájazdov a last minute od viac než 120 cestovných kancelárií na jednom mieste. Kým to spustíme, môžete hľadať priamo u nich.",
     tours_brand_sub: "Zájazdy a last minute od 120+ CK",
-    tours_preview_cap: "Náhľad platformy Invia",
     tours_why_title: "Prečo Invia",
     tours_b1: "Viac než 120 cestovných kancelárií na jednom mieste",
     tours_b2: "Last minute aj first minute za skvelé ceny",
     tours_b3: "Rovnaké ceny ako priamo u cestovnej kancelárie",
     tours_b4: "Overené recenzie a poistenie proti úpadku CK",
-    tours_cta: "Hľadať zájazd na Invia",
+    tours_cta_lm: "Hľadať Last minute", tours_cta_all: "Prehliadať všetky zájazdy",
     tours_note: "Otvorí sa web Invia v novej karte.",
     hero_eyebrow: "Lacné letenky · 300+ aeroliniek",
     hero_title_pre: "Vaša cesta", hero_title_mid: "začína", hero_title_accent: "tu.",
@@ -235,13 +236,12 @@ const translations = {
     tours_title: "Tours & Last minute with Invia",
     tours_desc: "We're preparing a partnership with Invia – compare tours and last-minute deals from 120+ travel agencies in one place. Until then, you can search directly on their site.",
     tours_brand_sub: "Tours & last minute from 120+ agencies",
-    tours_preview_cap: "Invia platform preview",
     tours_why_title: "Why Invia",
     tours_b1: "120+ travel agencies in one place",
     tours_b2: "Last minute and first minute at great prices",
     tours_b3: "Same prices as booking directly with the agency",
     tours_b4: "Verified reviews and insolvency protection",
-    tours_cta: "Search tours on Invia",
+    tours_cta_lm: "Search Last minute", tours_cta_all: "Browse all tours",
     tours_note: "Opens Invia in a new tab.",
     hero_eyebrow: "Cheap flights · 300+ airlines",
     hero_title_pre: "Your journey", hero_title_mid: "starts", hero_title_accent: "here.",
@@ -470,6 +470,12 @@ const STYLES = `
   font-family:'Sora'; font-weight:700; font-size:16px; letter-spacing:-.2px;
   text-decoration:none; transition:.15s; }
 .stay-cta:hover { background:var(--green-d); transform:translateY(-1px); }
+.tours-cta-row { display:flex; flex-wrap:wrap; gap:10px; margin:20px 0 0; }
+.stay-cta-ghost { display:inline-flex; align-items:center; justify-content:center;
+  padding:14px 26px; border-radius:13px; background:transparent; color:var(--white);
+  border:1px solid var(--line2); font-family:'Sora'; font-weight:700; font-size:16px;
+  letter-spacing:-.2px; text-decoration:none; transition:.15s; }
+.stay-cta-ghost:hover { background:rgba(255,255,255,.08); border-color:var(--white); }
 
 /* ── value strip ── */
 .vals { max-width:1140px; margin:54px auto 0; padding:0 22px;
@@ -541,6 +547,8 @@ const STYLES = `
   .dst-grid { grid-template-columns:1fr 1fr; }
   .why { grid-template-columns:1fr 1fr; }
   .stay-why { grid-template-columns:1fr; }
+  .tours-cta-row { flex-direction:column; }
+  .tours-cta-row a { width:100%; }
   .row, .row.two, .row.three { grid-template-columns:1fr; }
   .swap { justify-self:center; transform:rotate(90deg); }
   .swap:hover { transform:rotate(270deg); }
@@ -937,9 +945,13 @@ export default function App() {
               <span className="stay-logo" style={{ color: "#0a64c2" }}>invia</span>
               <span className="stay-brand-sub">{t("tours_brand_sub")}</span>
             </div>
-            <div className="stay-preview-body">
-              <span>{t("tours_preview_cap")}</span>
-            </div>
+            <iframe src={INVIA_BANNER} title="Invia" width="955" height="100" scrolling="no" frameBorder="0"
+              style={{ width: "100%", maxWidth: "955px", height: "100px", border: "none", overflow: "hidden", display: "block", margin: "0 auto" }} />
+          </div>
+
+          <div className="tours-cta-row">
+            <a className="stay-cta" href={INVIA_LASTMINUTE} target="_blank" rel="sponsored noopener">{t("tours_cta_lm")}</a>
+            <a className="stay-cta-ghost" href={INVIA_URL} target="_blank" rel="sponsored noopener">{t("tours_cta_all")}</a>
           </div>
 
           <h3 className="stay-why-title">{t("tours_why_title")}</h3>
@@ -955,7 +967,6 @@ export default function App() {
             ))}
           </div>
 
-          <a className="stay-cta" href="https://www.invia.cz" target="_blank" rel="sponsored noopener">{t("tours_cta")}</a>
           <p className="auto-note">{t("tours_note")}</p>
         </div>
       </section>
