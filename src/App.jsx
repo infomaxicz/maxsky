@@ -83,6 +83,9 @@ const translations = {
     auto_note: "Datum a čas vyberete na další stránce u DiscoverCars.",
     dc_banner_btn: "Hledat auto na DiscoverCars",
     auto_iframe_note: "Vyhledávání běží přes DiscoverCars. Pokud se nenačte, použijte výběr města níže.",
+    auto_form_title: "Najděte si auto nebo karavan",
+    auto_form_sub: "Vyberte město vyzvednutí a porovnejte nabídky stovek půjčoven přes DiscoverCars.",
+    auto_form_btn: "Hledat auto",
     auto_stat1_n: "500+", auto_stat1_l: "půjčoven po světě",
     auto_stat2_n: "145", auto_stat2_l: "zemí",
     auto_stat3_n: "70 %", auto_stat3_l: "spokojených řidičů",
@@ -190,6 +193,9 @@ const translations = {
     auto_note: "Dátum a čas vyberieš na ďalšej stránke u DiscoverCars.",
     dc_banner_btn: "Hľadať auto na DiscoverCars",
     auto_iframe_note: "Vyhľadávanie beží cez DiscoverCars. Ak sa nenačíta, použite výber mesta nižšie.",
+    auto_form_title: "Nájdite si auto alebo karavan",
+    auto_form_sub: "Vyberte mesto vyzdvihnutia a porovnajte ponuky stoviek požičovní cez DiscoverCars.",
+    auto_form_btn: "Hľadať auto",
     auto_stat1_n: "500+", auto_stat1_l: "požičovní po svete",
     auto_stat2_n: "145", auto_stat2_l: "krajín",
     auto_stat3_n: "70 %", auto_stat3_l: "spokojných vodičov",
@@ -297,6 +303,9 @@ const translations = {
     auto_note: "You'll pick dates on the next page at DiscoverCars.",
     dc_banner_btn: "Search cars on DiscoverCars",
     auto_iframe_note: "Search runs via DiscoverCars. If it doesn't load, use the city picker below.",
+    auto_form_title: "Find your car or campervan",
+    auto_form_sub: "Choose your pick-up city and compare hundreds of rentals via DiscoverCars.",
+    auto_form_btn: "Search cars",
     auto_stat1_n: "500+", auto_stat1_l: "rental companies worldwide",
     auto_stat2_n: "145", auto_stat2_l: "countries",
     auto_stat3_n: "70 %", auto_stat3_l: "happy drivers",
@@ -1009,13 +1018,9 @@ export default function App() {
       <section className="auto" id="auto">
         <h2 className="auto-h">{t("auto_title")}</h2>
         <p className="auto-sub">{t("auto_sub")}</p>
-        <div className="auto-card auto-frame">
-          <iframe src="https://www.discovercars.com/?a_aid=maxisky" title="DiscoverCars"
-            loading="lazy"
-            style={{ width: "100%", height: 560, border: 0, borderRadius: 16, display: "block" }} />
-          <p className="auto-note">{t("auto_iframe_note")}</p>
-        </div>
-        <div className="auto-card">
+        <div className="tours-form-box">
+          <h3 className="stay-why-title tours-form-title">{t("auto_form_title")}</h3>
+          <p className="auto-sub">{t("auto_form_sub")}</p>
           <label className="auto-label" htmlFor="dcCity">{t("auto_pick")}</label>
           <div className="auto-row">
             <select id="dcCity" className="auto-select" value={autoCity}
@@ -1024,8 +1029,8 @@ export default function App() {
                 <option key={c.url} value={c.url}>{c.labelKey ? t(c.labelKey) : c.label}</option>
               ))}
             </select>
-            <button className="auto-primary" type="button"
-              onClick={() => window.open(autoCity, "_blank", "noopener")}>{t("auto_btn")}</button>
+            <button className="stay-cta" type="button"
+              onClick={() => window.open(autoCity || DC_URL, "_blank", "noopener")}>{t("auto_form_btn")}</button>
           </div>
           <p className="auto-note">{t("auto_note")}</p>
         </div>
