@@ -88,6 +88,7 @@ const translations = {
     faq_a_4: "Ano — jednosměrné i zpáteční lety.",
     ft_slogan: "Levné letenky pro tvé cesty.",
     ft_terms: "Obchodní podmínky", ft_privacy: "Ochrana osobních údajů", ft_cookies: "Zásady cookies",
+    ft_cars: "Půjčovna aut — DiscoverCars",
     ft_copy: "© 2026 MaxiSky · Porovnávač letenek",
   },
   sk: {
@@ -128,6 +129,7 @@ const translations = {
     faq_a_4: "Áno — jednosmerné aj spiatočné lety.",
     ft_slogan: "Lacné letenky pre tvoje cesty.",
     ft_terms: "Obchodné podmienky", ft_privacy: "Ochrana osobných údajov", ft_cookies: "Zásady cookies",
+    ft_cars: "Požičovňa áut — DiscoverCars",
     ft_copy: "© 2026 MaxiSky · Porovnávač leteniek",
   },
   en: {
@@ -168,6 +170,7 @@ const translations = {
     faq_a_4: "Yes — both one-way and round-trip flights.",
     ft_slogan: "Cheap flights for your travels.",
     ft_terms: "Terms & Conditions", ft_privacy: "Privacy Policy", ft_cookies: "Cookie Policy",
+    ft_cars: "Car rental — DiscoverCars",
     ft_copy: "© 2026 MaxiSky · Flight comparison",
   },
 };
@@ -657,6 +660,7 @@ export default function App() {
             <a href="/terms.html" target="_blank" rel="noopener">{t("ft_terms")}</a>
             <a href="/privacy.html" target="_blank" rel="noopener">{t("ft_privacy")}</a>
             <a href="/cookies.html" target="_blank" rel="noopener">{t("ft_cookies")}</a>
+            <a href="https://www.discovercars.com/?a_aid=maxisky" target="_blank" rel="sponsored noopener">{t("ft_cars")}</a>
           </nav>
         </div>
         <div className="site-ft-bot">
