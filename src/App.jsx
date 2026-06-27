@@ -16,6 +16,7 @@ const INVIA_FIRSTMINUTE = "https://www.invia.cz/dovolena/first-minute/?b_https=1
 const INVIA_EGYPT = "https://www.invia.cz/dovolena/egypt/?b_https=1&aid=9227602&data1=tours_egypt";
 const INVIA_RECKO = "https://www.invia.cz/dovolena/recko/?b_https=1&aid=9227602&data1=tours_recko";
 const INVIA_TURECKO = "https://www.invia.cz/dovolena/turecko/?b_https=1&aid=9227602&data1=tours_turecko";
+const INVIA_FINALCTA = "https://www.invia.cz/dovolena/last-minute/?b_https=1&aid=9227602&data1=tours_finalcta";
 const INVIA_FORM = "https://affil.invia.cz/direct/core/tool_search-form/render-form/nl_product_id/1/template/728x90/color_button_bg/3B82F6/color_button_hover_bg/2563EB/color_button_text/FFFFFF/color_form_bg/152033/color_form_text/FFFFFF/color_scrollbar/1B2740/color_select_border/2A3550/aid/9227602/";
 
 function buildWlUrl({ from, to, depart, ret, adults }) {
@@ -102,6 +103,17 @@ const translations = {
     tours_b2: "Porovnání více než 120 cestovních kanceláří – vždy nejlepší cena",
     tours_b3: "Stejné ceny jako u cestovky, žádné poplatky navíc",
     tours_b4: "Ověřené recenze a pojištění proti úpadku CK – nakupujete bezpečně",
+    tours_stat1_n: "120+", tours_stat1_l: "cestovních kanceláří",
+    tours_stat2_n: "22 let", tours_stat2_l: "zkušeností Invia",
+    tours_stat3_n: "1,8 mil.", tours_stat3_l: "spokojených klientů",
+    tours_stat4_n: "100 %", tours_stat4_l: "pojištění proti úpadku",
+    tours_how_title: "Jak to funguje",
+    tours_how_s1t: "Zadejte termín", tours_how_s1d: "Vyplňte destinaci a datum ve vyhledávači výše.",
+    tours_how_s2t: "Porovnejte nabídky", tours_how_s2d: "Projděte zájezdy od více než 120 cestovních kanceláří.",
+    tours_how_s3t: "Rezervujte bezpečně", tours_how_s3d: "Stejná cena jako u CK, s pojištěním proti úpadku.",
+    tours_cta_title: "Vaše vysněná dovolená čeká",
+    tours_cta_sub: "Tisíce zájezdů a last minute nabídek. Vyberte si tu svou ještě dnes.",
+    tours_cta_btn: "Prohlédnout Last minute",
     tours_cta_lm: "Hledat Last minute", tours_cta_fm: "First minute", tours_cta_all: "Procházet všechny zájezdy",
     tours_egypt: "Egypt", tours_recko: "Řecko", tours_turecko: "Turecko",
     tours_form_title: "Vyhledat zájezd", tours_offers_title: "Akční nabídky",
@@ -176,6 +188,17 @@ const translations = {
     tours_b2: "Porovnanie viac než 120 cestovných kancelárií – vždy najlepšia cena",
     tours_b3: "Rovnaké ceny ako u cestovky, žiadne poplatky navyše",
     tours_b4: "Overené recenzie a poistenie proti úpadku CK – nakupujete bezpečne",
+    tours_stat1_n: "120+", tours_stat1_l: "cestovných kancelárií",
+    tours_stat2_n: "22 rokov", tours_stat2_l: "skúseností Invia",
+    tours_stat3_n: "1,8 mil.", tours_stat3_l: "spokojných klientov",
+    tours_stat4_n: "100 %", tours_stat4_l: "poistenie proti úpadku",
+    tours_how_title: "Ako to funguje",
+    tours_how_s1t: "Zadajte termín", tours_how_s1d: "Vyplňte destináciu a dátum vo vyhľadávači vyššie.",
+    tours_how_s2t: "Porovnajte ponuky", tours_how_s2d: "Prejdite zájazdy od viac než 120 cestovných kancelárií.",
+    tours_how_s3t: "Rezervujte bezpečne", tours_how_s3d: "Rovnaká cena ako u CK, s poistením proti úpadku.",
+    tours_cta_title: "Vaša vysnívaná dovolenka čaká",
+    tours_cta_sub: "Tisíce zájazdov a last minute ponúk. Vyberte si tú svoju ešte dnes.",
+    tours_cta_btn: "Pozrieť Last minute",
     tours_cta_lm: "Hľadať Last minute", tours_cta_fm: "First minute", tours_cta_all: "Prehliadať všetky zájazdy",
     tours_egypt: "Egypt", tours_recko: "Grécko", tours_turecko: "Turecko",
     tours_form_title: "Vyhľadať zájazd", tours_offers_title: "Akčné ponuky",
@@ -250,6 +273,17 @@ const translations = {
     tours_b2: "Compare 120+ travel agencies – always the best price",
     tours_b3: "Same prices as the agency, no extra fees",
     tours_b4: "Verified reviews and insolvency protection – shop safely",
+    tours_stat1_n: "120+", tours_stat1_l: "travel agencies",
+    tours_stat2_n: "22 years", tours_stat2_l: "of Invia experience",
+    tours_stat3_n: "1.8M", tours_stat3_l: "happy customers",
+    tours_stat4_n: "100 %", tours_stat4_l: "insolvency protection",
+    tours_how_title: "How it works",
+    tours_how_s1t: "Set your dates", tours_how_s1d: "Enter destination and date in the search above.",
+    tours_how_s2t: "Compare offers", tours_how_s2d: "Browse tours from 120+ travel agencies.",
+    tours_how_s3t: "Book safely", tours_how_s3d: "Same price as the agency, with insolvency protection.",
+    tours_cta_title: "Your dream holiday awaits",
+    tours_cta_sub: "Thousands of tours and last-minute deals. Find yours today.",
+    tours_cta_btn: "Browse Last minute",
     tours_cta_lm: "Search Last minute", tours_cta_fm: "First minute", tours_cta_all: "Browse all tours",
     tours_egypt: "Egypt", tours_recko: "Greece", tours_turecko: "Turkey",
     tours_form_title: "Search a tour", tours_offers_title: "Featured deals",
@@ -311,7 +345,7 @@ function getInitialPage() {
 }
 
 const STYLES = `
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@600&family=Space+Grotesk:wght@600;700&display=swap');
 
 .mx { --navy:#15202C; --navy2:#1C2A3A; --navy3:#22344A; --green:#3B82F6;
   --green-d:#2563EB; --white:#FFFFFF; --mist:#94A4B6; --field:#FFFFFF;
@@ -488,6 +522,29 @@ const STYLES = `
 .tours-form-box .tours-form-title { font-size:22px; margin:0 0 20px; }
 .tours-offers { margin:0 0 24px; }
 .tours-offers .stay-why-title { margin:0 0 14px; }
+.tours-intro-title { text-align:center; }
+.tours-intro-desc { text-align:center; max-width:620px; margin:0 auto; line-height:1.6; }
+.tours-trust { background:var(--navy2); border:1px solid var(--line); border-radius:16px;
+  padding:24px 20px; margin:24px 0; display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+.tours-stat { text-align:center; }
+.tours-stat-n { font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:26px;
+  color:var(--green); line-height:1.1; }
+.tours-stat-l { font-size:12.5px; color:var(--mist); margin-top:6px; line-height:1.35; }
+.tours-how { margin:0 0 24px; }
+.tours-how-steps { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+.tours-how-step { background:var(--navy2); border:1px solid var(--line); border-radius:14px; padding:20px 18px; }
+.tours-how-num { width:34px; height:34px; border-radius:50%; display:grid; place-items:center;
+  background:var(--green); color:#fff; font-family:'Space Grotesk',sans-serif; font-weight:700;
+  font-size:16px; margin-bottom:12px; }
+.tours-how-step h4 { font-family:'Sora'; font-weight:700; font-size:15.5px; margin:0 0 6px; color:var(--white); }
+.tours-how-step p { font-size:13px; color:var(--mist); margin:0; line-height:1.45; }
+.tours-final-cta { text-align:center; border-radius:18px; padding:34px 24px; margin:0 0 22px;
+  background:linear-gradient(140deg,rgba(59,130,246,.16),rgba(37,99,235,.08));
+  border:1px solid rgba(59,130,246,.4); }
+.tours-final-cta h3 { font-family:'Sora'; font-weight:800; font-size:24px; letter-spacing:-.4px;
+  margin:0 0 10px; color:var(--white); }
+.tours-final-cta p { font-size:14.5px; color:var(--mist); margin:0 auto 20px; max-width:520px; line-height:1.5; }
+.tours-final-cta .stay-cta { font-size:17px; padding:15px 30px; }
 
 /* ── value strip ── */
 .vals { max-width:1140px; margin:54px auto 0; padding:0 22px;
@@ -561,6 +618,8 @@ const STYLES = `
   .stay-why { grid-template-columns:1fr; }
   .tours-cats { flex-direction:column; }
   .tours-cats a { width:100%; }
+  .tours-trust { grid-template-columns:1fr 1fr; }
+  .tours-how-steps { grid-template-columns:1fr; }
   .row, .row.two, .row.three { grid-template-columns:1fr; }
   .swap { justify-self:center; transform:rotate(90deg); }
   .swap:hover { transform:rotate(270deg); }
@@ -948,8 +1007,8 @@ export default function App() {
       {page === "tours" && (
       <section className="auto">
         <div className="auto-card">
-          <h2 className="auto-h">{t("tours_title")}</h2>
-          <p className="auto-sub">{t("tours_desc")}</p>
+          <h2 className="auto-h tours-intro-title">{t("tours_title")}</h2>
+          <p className="auto-sub tours-intro-desc">{t("tours_desc")}</p>
 
           <div className="tours-form-box">
             <h3 className="stay-why-title tours-form-title">{t("tours_form_title")}</h3>
@@ -985,6 +1044,34 @@ export default function App() {
                 <span>{t(k)}</span>
               </div>
             ))}
+          </div>
+
+          <div className="tours-trust">
+            {[1, 2, 3, 4].map((n) => (
+              <div key={n} className="tours-stat">
+                <div className="tours-stat-n">{t("tours_stat" + n + "_n")}</div>
+                <div className="tours-stat-l">{t("tours_stat" + n + "_l")}</div>
+              </div>
+            ))}
+          </div>
+
+          <div className="tours-how">
+            <h3 className="stay-why-title">{t("tours_how_title")}</h3>
+            <div className="tours-how-steps">
+              {[1, 2, 3].map((n) => (
+                <div key={n} className="tours-how-step">
+                  <div className="tours-how-num">{n}</div>
+                  <h4>{t("tours_how_s" + n + "t")}</h4>
+                  <p>{t("tours_how_s" + n + "d")}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="tours-final-cta">
+            <h3>{t("tours_cta_title")}</h3>
+            <p>{t("tours_cta_sub")}</p>
+            <a className="stay-cta" href={INVIA_FINALCTA} target="_blank" rel="sponsored noopener">{t("tours_cta_btn")}</a>
           </div>
 
           <p className="auto-note">{t("tours_note")}</p>
