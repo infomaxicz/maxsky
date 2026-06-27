@@ -105,6 +105,17 @@ const translations = {
     stay_b4: "Ověřené recenze od skutečných hostů",
     stay_cta: "Hledat ubytování na Agoda",
     stay_note: "Otevře se web Agoda v nové kartě.",
+    stay_stat1_n: "2 mil.+", stay_stat1_l: "ubytování po světě",
+    stay_stat2_n: "200+", stay_stat2_l: "zemí a destinací",
+    stay_stat3_n: "24/7", stay_stat3_l: "zákaznická podpora",
+    stay_stat4_n: "0 €", stay_stat4_l: "storno u mnoha hotelů",
+    stay_how_title: "Jak to funguje",
+    stay_how_s1t: "Zadejte destinaci", stay_how_s1d: "Vyberte město a termín pobytu.",
+    stay_how_s2t: "Porovnejte hotely", stay_how_s2d: "Miliony ubytování s ověřenými recenzemi.",
+    stay_how_s3t: "Rezervujte výhodně", stay_how_s3d: "Skvělé ceny a u mnoha hotelů storno zdarma.",
+    stay_cta_title: "Najděte si svůj hotel",
+    stay_cta_sub: "Miliony ubytování po celém světě za skvělé ceny. Vyberte si to své.",
+    stay_cta_btn2: "Hledat ubytování",
     nav_tours: "Zájezdy / Last minute",
     tours_badge: "Připravujeme",
     tours_title: "Zájezdy a Last minute na jednom místě",
@@ -201,6 +212,17 @@ const translations = {
     stay_b4: "Overené recenzie od skutočných hostí",
     stay_cta: "Hľadať ubytovanie na Agoda",
     stay_note: "Otvorí sa web Agoda v novej karte.",
+    stay_stat1_n: "2 mil.+", stay_stat1_l: "ubytovaní po svete",
+    stay_stat2_n: "200+", stay_stat2_l: "krajín a destinácií",
+    stay_stat3_n: "24/7", stay_stat3_l: "zákaznícka podpora",
+    stay_stat4_n: "0 €", stay_stat4_l: "storno pri mnohých hoteloch",
+    stay_how_title: "Ako to funguje",
+    stay_how_s1t: "Zadajte destináciu", stay_how_s1d: "Vyberte mesto a termín pobytu.",
+    stay_how_s2t: "Porovnajte hotely", stay_how_s2d: "Milióny ubytovaní s overenými recenziami.",
+    stay_how_s3t: "Rezervujte výhodne", stay_how_s3d: "Skvelé ceny a pri mnohých hoteloch storno zdarma.",
+    stay_cta_title: "Nájdite si svoj hotel",
+    stay_cta_sub: "Milióny ubytovaní po celom svete za skvelé ceny. Vyberte si to svoje.",
+    stay_cta_btn2: "Hľadať ubytovanie",
     nav_tours: "Zájazdy / Last minute",
     tours_badge: "Pripravujeme",
     tours_title: "Zájazdy a Last minute na jednom mieste",
@@ -297,6 +319,17 @@ const translations = {
     stay_b4: "Verified reviews from real guests",
     stay_cta: "Search stays on Agoda",
     stay_note: "Opens Agoda in a new tab.",
+    stay_stat1_n: "2 mil.+", stay_stat1_l: "stays worldwide",
+    stay_stat2_n: "200+", stay_stat2_l: "countries & destinations",
+    stay_stat3_n: "24/7", stay_stat3_l: "customer support",
+    stay_stat4_n: "0 €", stay_stat4_l: "cancellation on many hotels",
+    stay_how_title: "How it works",
+    stay_how_s1t: "Enter destination", stay_how_s1d: "Choose your city and dates.",
+    stay_how_s2t: "Compare hotels", stay_how_s2d: "Millions of stays with verified reviews.",
+    stay_how_s3t: "Book at great prices", stay_how_s3d: "Great prices and free cancellation on many hotels.",
+    stay_cta_title: "Find your hotel",
+    stay_cta_sub: "Millions of stays worldwide at great prices. Find yours.",
+    stay_cta_btn2: "Search stays",
     nav_tours: "Tours / Last minute",
     tours_badge: "Coming soon",
     tours_title: "Tours & Last minute in one place",
@@ -1061,6 +1094,34 @@ export default function App() {
 
           <a className="stay-cta" href={AGODA_URL} target="_blank" rel="sponsored noopener">{t("stay_cta")}</a>
           <p className="auto-note">{t("stay_note")}</p>
+
+          <div className="tours-trust">
+            {[1, 2, 3, 4].map((n) => (
+              <div key={n} className="tours-stat">
+                <div className="tours-stat-n">{t("stay_stat" + n + "_n")}</div>
+                <div className="tours-stat-l">{t("stay_stat" + n + "_l")}</div>
+              </div>
+            ))}
+          </div>
+
+          <div className="tours-how">
+            <h3 className="stay-why-title">{t("stay_how_title")}</h3>
+            <div className="tours-how-steps">
+              {[1, 2, 3].map((n) => (
+                <div key={n} className="tours-how-step">
+                  <div className="tours-how-num">{n}</div>
+                  <h4>{t("stay_how_s" + n + "t")}</h4>
+                  <p>{t("stay_how_s" + n + "d")}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="tours-final-cta">
+            <h3>{t("stay_cta_title")}</h3>
+            <p>{t("stay_cta_sub")}</p>
+            <a className="stay-cta" href={AGODA_URL} target="_blank" rel="sponsored noopener">{t("stay_cta_btn2")}</a>
+          </div>
         </div>
       </section>
       )}
