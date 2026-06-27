@@ -8,6 +8,7 @@ import React, { useState, useRef, useEffect } from "react";
 // ─────────────────────────────────────────────────────────────
 
 const WL = "https://fly.maxisky.eu/flights/";
+const DC_URL = "https://www.discovercars.com/?a_aid=maxisky";
 const AGODA_URL = "https://www.agoda.com/partners/partnersearch.aspx?pcs=1&cid=1967819&hl=cs-cz";
 const INVIA_URL = "https://www.invia.cz/?b_https=1&aid=9227602&data1=tours_all";
 const INVIA_LASTMINUTE = "https://www.invia.cz/dovolena/last-minute/?b_https=1&aid=9227602&data1=tours_lastminute";
@@ -82,6 +83,17 @@ const translations = {
     auto_note: "Datum a čas vyberete na další stránce u DiscoverCars.",
     dc_banner_btn: "Hledat auto na DiscoverCars",
     auto_iframe_note: "Vyhledávání běží přes DiscoverCars. Pokud se nenačte, použijte výběr města níže.",
+    auto_stat1_n: "500+", auto_stat1_l: "půjčoven po světě",
+    auto_stat2_n: "145", auto_stat2_l: "zemí",
+    auto_stat3_n: "70 %", auto_stat3_l: "spokojených řidičů",
+    auto_stat4_n: "24/7", auto_stat4_l: "zákaznická podpora",
+    auto_how_title: "Jak to funguje",
+    auto_how_s1t: "Zadejte místo a termín", auto_how_s1d: "Vyberte město vyzvednutí a datum.",
+    auto_how_s2t: "Porovnejte nabídky", auto_how_s2d: "Stovky půjčoven na jednom místě, vždy nejlepší cena.",
+    auto_how_s3t: "Rezervujte online", auto_how_s3d: "Bezplatné storno u většiny rezervací.",
+    auto_cta_title: "Vyrazte na cestu",
+    auto_cta_sub: "Auto i karavan za skvělé ceny. Najděte si ten svůj na cesty.",
+    auto_cta_btn: "Najít vozidlo",
     stay_badge: "Rezervujte ubytování",
     stay_title: "Ubytování s Agodou",
     stay_desc: "Vyhledejte a rezervujte ubytování po celém světě přes Agodu – hotely, apartmány i resorty za výhodné ceny.",
@@ -167,6 +179,17 @@ const translations = {
     auto_note: "Dátum a čas vyberieš na ďalšej stránke u DiscoverCars.",
     dc_banner_btn: "Hľadať auto na DiscoverCars",
     auto_iframe_note: "Vyhľadávanie beží cez DiscoverCars. Ak sa nenačíta, použite výber mesta nižšie.",
+    auto_stat1_n: "500+", auto_stat1_l: "požičovní po svete",
+    auto_stat2_n: "145", auto_stat2_l: "krajín",
+    auto_stat3_n: "70 %", auto_stat3_l: "spokojných vodičov",
+    auto_stat4_n: "24/7", auto_stat4_l: "zákaznícka podpora",
+    auto_how_title: "Ako to funguje",
+    auto_how_s1t: "Zadajte miesto a termín", auto_how_s1d: "Vyberte mesto vyzdvihnutia a dátum.",
+    auto_how_s2t: "Porovnajte ponuky", auto_how_s2d: "Stovky požičovní na jednom mieste, vždy najlepšia cena.",
+    auto_how_s3t: "Rezervujte online", auto_how_s3d: "Bezplatné storno pri väčšine rezervácií.",
+    auto_cta_title: "Vyrazte na cestu",
+    auto_cta_sub: "Auto aj karavan za skvelé ceny. Nájdite si ten svoj na cesty.",
+    auto_cta_btn: "Nájsť vozidlo",
     stay_badge: "Rezervujte ubytovanie",
     stay_title: "Ubytovanie s Agodou",
     stay_desc: "Vyhľadajte a zarezervujte ubytovanie po celom svete cez Agodu – hotely, apartmány aj rezorty za výhodné ceny.",
@@ -252,6 +275,17 @@ const translations = {
     auto_note: "You'll pick dates on the next page at DiscoverCars.",
     dc_banner_btn: "Search cars on DiscoverCars",
     auto_iframe_note: "Search runs via DiscoverCars. If it doesn't load, use the city picker below.",
+    auto_stat1_n: "500+", auto_stat1_l: "rental companies worldwide",
+    auto_stat2_n: "145", auto_stat2_l: "countries",
+    auto_stat3_n: "70 %", auto_stat3_l: "happy drivers",
+    auto_stat4_n: "24/7", auto_stat4_l: "customer support",
+    auto_how_title: "How it works",
+    auto_how_s1t: "Enter place and dates", auto_how_s1d: "Pick your pick-up city and date.",
+    auto_how_s2t: "Compare offers", auto_how_s2d: "Hundreds of rentals in one place, best price.",
+    auto_how_s3t: "Book online", auto_how_s3d: "Free cancellation on most bookings.",
+    auto_cta_title: "Hit the road",
+    auto_cta_sub: "Cars and campervans at great prices. Find yours.",
+    auto_cta_btn: "Find a vehicle",
     stay_badge: "Book your stay",
     stay_title: "Stays with Agoda",
     stay_desc: "Search and book stays worldwide via Agoda – hotels, apartments and resorts at great prices.",
@@ -961,6 +995,34 @@ export default function App() {
               onClick={() => window.open(autoCity, "_blank", "noopener")}>{t("auto_btn")}</button>
           </div>
           <p className="auto-note">{t("auto_note")}</p>
+        </div>
+
+        <div className="tours-trust">
+          {[1, 2, 3, 4].map((n) => (
+            <div key={n} className="tours-stat">
+              <div className="tours-stat-n">{t("auto_stat" + n + "_n")}</div>
+              <div className="tours-stat-l">{t("auto_stat" + n + "_l")}</div>
+            </div>
+          ))}
+        </div>
+
+        <div className="tours-how">
+          <h3 className="stay-why-title">{t("auto_how_title")}</h3>
+          <div className="tours-how-steps">
+            {[1, 2, 3].map((n) => (
+              <div key={n} className="tours-how-step">
+                <div className="tours-how-num">{n}</div>
+                <h4>{t("auto_how_s" + n + "t")}</h4>
+                <p>{t("auto_how_s" + n + "d")}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="tours-final-cta">
+          <h3>{t("auto_cta_title")}</h3>
+          <p>{t("auto_cta_sub")}</p>
+          <a className="stay-cta" href={DC_URL} target="_blank" rel="sponsored noopener">{t("auto_cta_btn")}</a>
         </div>
       </section>
       )}
