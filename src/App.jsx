@@ -158,6 +158,14 @@ const translations = {
     why2_h: "Bez skrytých poplatků", why2_p: "Cena, kterou vidíš, je cena, kterou platíš",
     why3_h: "Bezpečná rezervace", why3_p: "Nakupuješ u ověřených prodejců",
     why4_h: "Rychle a zdarma", why4_p: "Naše služba tě nestojí nic navíc",
+    home_f1t: "300+ aerolinek najednou",
+    home_f1d: "Jedno hledání porovná klasické i nízkonákladové dopravce a najde nejlevnější kombinaci.",
+    home_f2t: "Ceny v eurech, bez přirážek",
+    home_f2d: "Vidíš férovou cenu předem. Žádné skryté poplatky na konci rezervace.",
+    home_f3t: "Bezpečná rezervace",
+    home_f3d: "Nakupuješ u ověřených prodejců letenek.",
+    home_f4t: "Rychle a zdarma",
+    home_f4d: "Naše porovnání tě nestojí nic navíc.",
     val1_h: "300+ aerolinek najednou", val1_p: "Jedno hledání porovná klasické i nízkonákladové společnosti a najde nejlevnější kombinaci.",
     val2_h: "Ceny v eurech, bez přirážek", val2_p: "Vidíš férovou cenu předem. Žádné skryté poplatky na konci rezervace.",
     val3_h: "Rezervace za pár minut", val3_p: "Vyber let a dokonči rezervaci přímo u ověřeného prodejce. Rychle a bezpečně.",
@@ -265,6 +273,14 @@ const translations = {
     why2_h: "Bez skrytých poplatkov", why2_p: "Cena, ktorú vidíš, je cena, ktorú platíš",
     why3_h: "Bezpečná rezervácia", why3_p: "Nakupuješ u overených predajcov",
     why4_h: "Rýchlo a zdarma", why4_p: "Naša služba ťa nestojí nič navyše",
+    home_f1t: "300+ aeroliniek naraz",
+    home_f1d: "Jedno hľadanie porovná klasické aj nízkonákladové dopravcov a nájde najlacnejšiu kombináciu.",
+    home_f2t: "Ceny v eurách, bez prirážok",
+    home_f2d: "Vidíš férovú cenu vopred. Žiadne skryté poplatky na konci rezervácie.",
+    home_f3t: "Bezpečná rezervácia",
+    home_f3d: "Nakupuješ u overených predajcov leteniek.",
+    home_f4t: "Rýchlo a zadarmo",
+    home_f4d: "Naše porovnanie ťa nestojí nič navyše.",
     val1_h: "300+ aeroliniek naraz", val1_p: "Jedno hľadanie porovná klasické aj nízkonákladové spoločnosti a nájde najlacnejšiu kombináciu.",
     val2_h: "Ceny v eurách, bez prirážok", val2_p: "Vidíš férovú cenu vopred. Žiadne skryté poplatky na konci rezervácie.",
     val3_h: "Rezervácia za pár minút", val3_p: "Vyber let a dokonči rezerváciu priamo u overeného predajcu. Rýchlo a bezpečne.",
@@ -372,6 +388,14 @@ const translations = {
     why2_h: "No hidden fees", why2_p: "The price you see is the price you pay",
     why3_h: "Secure booking", why3_p: "You buy from verified sellers",
     why4_h: "Fast and free", why4_p: "Our service costs you nothing extra",
+    home_f1t: "300+ airlines at once",
+    home_f1d: "One search compares full-service and low-cost carriers for the cheapest combination.",
+    home_f2t: "Prices in euros, no markups",
+    home_f2d: "See the fair price upfront. No hidden fees at checkout.",
+    home_f3t: "Secure booking",
+    home_f3d: "Book with verified flight sellers.",
+    home_f4t: "Fast and free",
+    home_f4d: "Our comparison costs you nothing extra.",
     val1_h: "300+ airlines at once", val1_p: "A single search compares full-service and low-cost carriers and finds the cheapest combination.",
     val2_h: "Prices in euros, no surcharges", val2_p: "You see a fair price upfront. No hidden fees at the end of booking.",
     val3_h: "Book in a few minutes", val3_p: "Pick a flight and complete the booking directly with a verified seller. Fast and secure.",
@@ -893,8 +917,8 @@ export default function App() {
               <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3.5S18 3 16.5 4.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
             </svg>
           </div>
-          <h3>{t("why1_h")}</h3>
-          <p>{t("why1_p")}</p>
+          <h3>{t("home_f1t")}</h3>
+          <p>{t("home_f1d")}</p>
         </div>
         <div className="why-it">
           <div className="ic">
@@ -904,8 +928,8 @@ export default function App() {
               <path d="M7 11h5"/><path d="M7 13.2h4"/>
             </svg>
           </div>
-          <h3>{t("why2_h")}</h3>
-          <p>{t("why2_p")}</p>
+          <h3>{t("home_f2t")}</h3>
+          <p>{t("home_f2d")}</p>
         </div>
         <div className="why-it">
           <div className="ic">
@@ -914,8 +938,8 @@ export default function App() {
               <path d="m9 12 2 2 4-4"/>
             </svg>
           </div>
-          <h3>{t("why3_h")}</h3>
-          <p>{t("why3_p")}</p>
+          <h3>{t("home_f3t")}</h3>
+          <p>{t("home_f3d")}</p>
         </div>
         <div className="why-it">
           <div className="ic">
@@ -923,27 +947,8 @@ export default function App() {
               <path d="M13 2 3 14h8l-1 8 11-13h-8l1-7z"/>
             </svg>
           </div>
-          <h3>{t("why4_h")}</h3>
-          <p>{t("why4_p")}</p>
-        </div>
-      </section>
-
-      {/* value props */}
-      <section className="vals">
-        <div className="val">
-          <div className="ic">◎</div>
-          <h3>{t("val1_h")}</h3>
-          <p>{t("val1_p")}</p>
-        </div>
-        <div className="val">
-          <div className="ic">€</div>
-          <h3>{t("val2_h")}</h3>
-          <p>{t("val2_p")}</p>
-        </div>
-        <div className="val">
-          <div className="ic">⚡</div>
-          <h3>{t("val3_h")}</h3>
-          <p>{t("val3_p")}</p>
+          <h3>{t("home_f4t")}</h3>
+          <p>{t("home_f4d")}</p>
         </div>
       </section>
 
