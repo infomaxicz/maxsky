@@ -571,17 +571,8 @@ export default function App() {
 
       {/* auto a karavan — DiscoverCars */}
       <section className="auto" id="auto">
-        <div className="auto-card">
-          <h2>{t("auto_title")}</h2>
-          <p className="sub">{t("auto_sub")}</p>
-          <div className="auto-cta">
-            <a className="auto-primary" href="https://www.discovercars.com/?a_aid=maxisky"
-              target="_blank" rel="sponsored noopener">{t("auto_btn")}</a>
-            <a className="auto-secondary" href="https://www.discovercars.com/cz/czech-republic/prague/prg?a_aid=maxisky"
-              target="_blank" rel="sponsored noopener">{t("auto_praha")}</a>
-          </div>
-          <p className="auto-soon">{t("auto_soon")}</p>
-        </div>
+        <iframe src="https://www.discovercars.com/?a_aid=maxisky" title="DiscoverCars"
+          style={{ width: "100%", height: 520, border: 0, borderRadius: 20 }} loading="lazy" />
       </section>
 
       {/* prečo MaxiSky — pás dôvery */}
