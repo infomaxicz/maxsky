@@ -77,8 +77,12 @@ const translations = {
     stay_title: "Ubytování s Agodou",
     stay_desc: "Vyhledejte a rezervujte ubytování po celém světě přes Agodu – hotely, apartmány i resorty za výhodné ceny.",
     stay_brand_sub: "Hotely a ubytování po celém světě",
-    stay_preview_cap: "Náhled platformy Agoda",
-    stay_cta: "Přejít na Agoda.com",
+    stay_why_title: "Proč Agoda",
+    stay_b1: "Miliony ubytování po celém světě",
+    stay_b2: "Výhodné ceny, akce a slevy",
+    stay_b3: "Bezplatné storno u mnoha ubytování",
+    stay_b4: "Ověřené recenze od skutečných hostů",
+    stay_cta: "Hledat ubytování na Agoda",
     stay_note: "Otevře se web Agoda v nové kartě.",
     hero_eyebrow: "Levné letenky · 300+ aerolinek",
     hero_title_pre: "Vaše cesta", hero_title_mid: "začíná", hero_title_accent: "tady.",
@@ -133,8 +137,12 @@ const translations = {
     stay_title: "Ubytovanie s Agodou",
     stay_desc: "Vyhľadajte a zarezervujte ubytovanie po celom svete cez Agodu – hotely, apartmány aj rezorty za výhodné ceny.",
     stay_brand_sub: "Hotely a ubytovanie po celom svete",
-    stay_preview_cap: "Náhľad platformy Agoda",
-    stay_cta: "Prejsť na Agoda.com",
+    stay_why_title: "Prečo Agoda",
+    stay_b1: "Milióny ubytovaní po celom svete",
+    stay_b2: "Výhodné ceny, akcie a zľavy",
+    stay_b3: "Bezplatné storno pri mnohých ubytovaniach",
+    stay_b4: "Overené recenzie od skutočných hostí",
+    stay_cta: "Hľadať ubytovanie na Agoda",
     stay_note: "Otvorí sa web Agoda v novej karte.",
     hero_eyebrow: "Lacné letenky · 300+ aeroliniek",
     hero_title_pre: "Vaša cesta", hero_title_mid: "začína", hero_title_accent: "tu.",
@@ -189,8 +197,12 @@ const translations = {
     stay_title: "Stays with Agoda",
     stay_desc: "Search and book stays worldwide via Agoda – hotels, apartments and resorts at great prices.",
     stay_brand_sub: "Hotels & stays worldwide",
-    stay_preview_cap: "Agoda platform preview",
-    stay_cta: "Go to Agoda.com",
+    stay_why_title: "Why Agoda",
+    stay_b1: "Millions of stays worldwide",
+    stay_b2: "Great prices, deals and discounts",
+    stay_b3: "Free cancellation on many properties",
+    stay_b4: "Verified reviews from real guests",
+    stay_cta: "Search stays on Agoda",
     stay_note: "Opens Agoda in a new tab.",
     hero_eyebrow: "Cheap flights · 300+ airlines",
     hero_title_pre: "Your journey", hero_title_mid: "starts", hero_title_accent: "here.",
@@ -404,9 +416,13 @@ const STYLES = `
   padding:16px 20px; border-bottom:1px solid var(--line2); background:var(--navy2); }
 .stay-logo { font-family:'Sora'; font-weight:800; font-size:24px; letter-spacing:-.5px; color:#1d62f0; }
 .stay-brand-sub { font-size:12.5px; color:var(--mist); font-weight:500; }
-.stay-preview-body { display:grid; place-items:center; min-height:200px; padding:30px 20px;
-  text-align:center; color:#5b6b7e; font-family:'Sora'; font-weight:600; font-size:15px;
-  background:linear-gradient(150deg,#e8eef6,#cdd9ea); }
+.stay-why-title { font-family:'Sora'; font-weight:700; font-size:17px; letter-spacing:-.3px;
+  color:var(--white); margin:0 0 14px; }
+.stay-why { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:0 0 24px; }
+.stay-why-item { display:flex; align-items:flex-start; gap:11px;
+  background:var(--navy3); border:1px solid var(--line); border-radius:13px; padding:14px 16px;
+  color:var(--white); font-size:14px; line-height:1.4; }
+.stay-why-item svg { width:20px; height:20px; flex-shrink:0; color:var(--green); margin-top:1px; }
 .stay-cta { display:inline-flex; align-items:center; justify-content:center;
   padding:14px 26px; border-radius:13px; background:var(--green); color:#fff;
   font-family:'Sora'; font-weight:700; font-size:16px; letter-spacing:-.2px;
@@ -482,6 +498,7 @@ const STYLES = `
   .vals { grid-template-columns:1fr; }
   .dst-grid { grid-template-columns:1fr 1fr; }
   .why { grid-template-columns:1fr 1fr; }
+  .stay-why { grid-template-columns:1fr; }
   .row, .row.two, .row.three { grid-template-columns:1fr; }
   .swap { justify-self:center; transform:rotate(90deg); }
   .swap:hover { transform:rotate(270deg); }
@@ -838,9 +855,23 @@ export default function App() {
               <span className="stay-logo">agoda</span>
               <span className="stay-brand-sub">{t("stay_brand_sub")}</span>
             </div>
-            <div className="stay-preview-body">
-              <span>{t("stay_preview_cap")}</span>
-            </div>
+            <a href={AGODA_URL} target="_blank" rel="sponsored noopener">
+              <img src="/agoda-destinations.png" alt="Agoda"
+                style={{ width: "100%", display: "block", borderRadius: "12px" }} loading="lazy" />
+            </a>
+          </div>
+
+          <h3 className="stay-why-title">{t("stay_why_title")}</h3>
+          <div className="stay-why">
+            {["stay_b1", "stay_b2", "stay_b3", "stay_b4"].map((k) => (
+              <div key={k} className="stay-why-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"
+                  strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+                <span>{t(k)}</span>
+              </div>
+            ))}
           </div>
 
           <a className="stay-cta" href={AGODA_URL} target="_blank" rel="sponsored noopener">{t("stay_cta")}</a>
