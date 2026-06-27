@@ -12,6 +12,8 @@ const AGODA_URL = "https://www.agoda.com/partners/partnersearch.aspx?pcs=1&cid=1
 const INVIA_URL = "https://www.invia.cz/?b_https=1&aid=9227602";
 const INVIA_LASTMINUTE = "https://www.invia.cz/dovolena/last-minute/?b_https=1&aid=9227602";
 const INVIA_BANNER = "https://affil.invia.cz/direct/core/tool_dynamic-banner/show-banner/id/9227602-6a3fbdae8f2bb/";
+const INVIA_FIRSTMINUTE = "https://www.invia.cz/dovolena/first-minute/?b_https=1&aid=9227602";
+const INVIA_FORM = "https://affil.invia.cz/direct/core/tool_search-form/render-form/nl_product_id/1/template/300x250/aid/9227602/";
 
 function buildWlUrl({ from, to, depart, ret, adults }) {
   const params = new URLSearchParams({
@@ -97,7 +99,8 @@ const translations = {
     tours_b2: "Last minute i first minute za skvělé ceny",
     tours_b3: "Stejné ceny jako přímo u cestovní kanceláře",
     tours_b4: "Ověřené recenze a pojištění proti úpadku CK",
-    tours_cta_lm: "Hledat Last minute", tours_cta_all: "Procházet všechny zájezdy",
+    tours_cta_lm: "Hledat Last minute", tours_cta_fm: "First minute", tours_cta_all: "Procházet všechny zájezdy",
+    tours_form_title: "Vyhledat zájezd", tours_offers_title: "Akční nabídky",
     tours_note: "Otevře se web Invia v nové kartě.",
     hero_eyebrow: "Levné letenky · 300+ aerolinek",
     hero_title_pre: "Vaše cesta", hero_title_mid: "začíná", hero_title_accent: "tady.",
@@ -169,7 +172,8 @@ const translations = {
     tours_b2: "Last minute aj first minute za skvelé ceny",
     tours_b3: "Rovnaké ceny ako priamo u cestovnej kancelárie",
     tours_b4: "Overené recenzie a poistenie proti úpadku CK",
-    tours_cta_lm: "Hľadať Last minute", tours_cta_all: "Prehliadať všetky zájazdy",
+    tours_cta_lm: "Hľadať Last minute", tours_cta_fm: "First minute", tours_cta_all: "Prehliadať všetky zájazdy",
+    tours_form_title: "Vyhľadať zájazd", tours_offers_title: "Akčné ponuky",
     tours_note: "Otvorí sa web Invia v novej karte.",
     hero_eyebrow: "Lacné letenky · 300+ aeroliniek",
     hero_title_pre: "Vaša cesta", hero_title_mid: "začína", hero_title_accent: "tu.",
@@ -241,7 +245,8 @@ const translations = {
     tours_b2: "Last minute and first minute at great prices",
     tours_b3: "Same prices as booking directly with the agency",
     tours_b4: "Verified reviews and insolvency protection",
-    tours_cta_lm: "Search Last minute", tours_cta_all: "Browse all tours",
+    tours_cta_lm: "Search Last minute", tours_cta_fm: "First minute", tours_cta_all: "Browse all tours",
+    tours_form_title: "Search a tour", tours_offers_title: "Featured deals",
     tours_note: "Opens Invia in a new tab.",
     hero_eyebrow: "Cheap flights · 300+ airlines",
     hero_title_pre: "Your journey", hero_title_mid: "starts", hero_title_accent: "here.",
@@ -470,12 +475,13 @@ const STYLES = `
   font-family:'Sora'; font-weight:700; font-size:16px; letter-spacing:-.2px;
   text-decoration:none; transition:.15s; }
 .stay-cta:hover { background:var(--green-d); transform:translateY(-1px); }
-.tours-cta-row { display:flex; flex-wrap:wrap; gap:10px; margin:20px 0 0; }
-.stay-cta-ghost { display:inline-flex; align-items:center; justify-content:center;
-  padding:14px 26px; border-radius:13px; background:transparent; color:var(--white);
-  border:1px solid var(--line2); font-family:'Sora'; font-weight:700; font-size:16px;
-  letter-spacing:-.2px; text-decoration:none; transition:.15s; }
-.stay-cta-ghost:hover { background:rgba(255,255,255,.08); border-color:var(--white); }
+.tours-cats { display:flex; flex-wrap:wrap; gap:10px; margin:18px 0; }
+.tours-cats .stay-cta { flex:1; min-width:180px; }
+.tours-form-box { background:var(--navy2); border:1px solid var(--line); border-radius:16px;
+  padding:22px 20px; margin:0 0 22px; }
+.tours-form-box .stay-why-title { margin:0 0 16px; }
+.tours-offers { margin:0 0 24px; }
+.tours-offers .stay-why-title { margin:0 0 14px; }
 
 /* ── value strip ── */
 .vals { max-width:1140px; margin:54px auto 0; padding:0 22px;
@@ -547,8 +553,8 @@ const STYLES = `
   .dst-grid { grid-template-columns:1fr 1fr; }
   .why { grid-template-columns:1fr 1fr; }
   .stay-why { grid-template-columns:1fr; }
-  .tours-cta-row { flex-direction:column; }
-  .tours-cta-row a { width:100%; }
+  .tours-cats { flex-direction:column; }
+  .tours-cats a { width:100%; }
   .row, .row.two, .row.three { grid-template-columns:1fr; }
   .swap { justify-self:center; transform:rotate(90deg); }
   .swap:hover { transform:rotate(270deg); }
@@ -940,18 +946,22 @@ export default function App() {
           <h2 className="auto-h">{t("tours_title")}</h2>
           <p className="auto-sub">{t("tours_desc")}</p>
 
-          <div className="stay-preview">
-            <div className="stay-preview-bar">
-              <span className="stay-logo" style={{ color: "#0a64c2" }}>invia</span>
-              <span className="stay-brand-sub">{t("tours_brand_sub")}</span>
-            </div>
-            <iframe src={INVIA_BANNER} title="Invia" width="955" height="100" scrolling="no" frameBorder="0"
-              style={{ width: "100%", maxWidth: "955px", height: "100px", border: "none", overflow: "hidden", display: "block", margin: "0 auto" }} />
+          <div className="tours-cats">
+            <a className="stay-cta" href={INVIA_LASTMINUTE} target="_blank" rel="sponsored noopener">{t("tours_cta_lm")}</a>
+            <a className="stay-cta" href={INVIA_FIRSTMINUTE} target="_blank" rel="sponsored noopener">{t("tours_cta_fm")}</a>
+            <a className="stay-cta" href={INVIA_URL} target="_blank" rel="sponsored noopener">{t("tours_cta_all")}</a>
           </div>
 
-          <div className="tours-cta-row">
-            <a className="stay-cta" href={INVIA_LASTMINUTE} target="_blank" rel="sponsored noopener">{t("tours_cta_lm")}</a>
-            <a className="stay-cta-ghost" href={INVIA_URL} target="_blank" rel="sponsored noopener">{t("tours_cta_all")}</a>
+          <div className="tours-form-box">
+            <h3 className="stay-why-title">{t("tours_form_title")}</h3>
+            <iframe src={INVIA_FORM} title="Invia vyhledávání" width="300" height="250" scrolling="no" frameBorder="0"
+              style={{ border: "none", overflow: "hidden", display: "block", margin: "0 auto", maxWidth: "100%" }} />
+          </div>
+
+          <div className="tours-offers">
+            <h3 className="stay-why-title">{t("tours_offers_title")}</h3>
+            <iframe src={INVIA_BANNER} title="Invia" width="955" height="100" scrolling="no" frameBorder="0"
+              style={{ width: "100%", maxWidth: "955px", height: "100px", border: "none", overflow: "hidden", display: "block", margin: "0 auto" }} />
           </div>
 
           <h3 className="stay-why-title">{t("tours_why_title")}</h3>
