@@ -63,13 +63,14 @@ const LANGS = [
 const translations = {
   cs: {
     lang_cs: "Čeština", lang_sk: "Slovenčina", lang_en: "English",
-    nav_stay: "Ubytování",
+    nav_flights: "Letenky", nav_stay: "Ubytování",
     nav_auto: "Auto a karavan",
     auto_title: "Auto a karavan",
     auto_sub: "Porovnejte půjčovny aut od stovek poskytovatelů na jednom místě.",
     auto_btn: "Najít auto",
     auto_pick: "Místo vyzvednutí", auto_city_any: "Jakékoli město",
     auto_note: "Datum a čas vyberete na další stránce u DiscoverCars.",
+    dc_banner_btn: "Hledat auto na DiscoverCars", stay_soon: "Připravujeme.",
     hero_eyebrow: "Levné letenky · 300+ aerolinek",
     hero_title_pre: "Vaše cesta", hero_title_mid: "začíná", hero_title_accent: "tady.",
     hero_lead: "Porovnejte stovky aerolinek najednou a rezervujte letenku za nejlepší cenu. Bez skrytých poplatků, v eurech.",
@@ -110,13 +111,14 @@ const translations = {
   },
   sk: {
     lang_cs: "Čeština", lang_sk: "Slovenčina", lang_en: "English",
-    nav_stay: "Ubytovanie",
+    nav_flights: "Letenky", nav_stay: "Ubytovanie",
     nav_auto: "Auto a karavan",
     auto_title: "Auto a karavan",
     auto_sub: "Porovnaj požičovne áut od stoviek poskytovateľov na jednom mieste.",
     auto_btn: "Nájsť auto",
     auto_pick: "Miesto vyzdvihnutia", auto_city_any: "Akékoľvek mesto",
     auto_note: "Dátum a čas vyberieš na ďalšej stránke u DiscoverCars.",
+    dc_banner_btn: "Hľadať auto na DiscoverCars", stay_soon: "Pripravujeme.",
     hero_eyebrow: "Lacné letenky · 300+ aeroliniek",
     hero_title_pre: "Vaša cesta", hero_title_mid: "začína", hero_title_accent: "tu.",
     hero_lead: "Porovnaj stovky aeroliniek naraz a rezervuj letenku za najlepšiu cenu. Bez skrytých poplatkov, v eurách.",
@@ -157,13 +159,14 @@ const translations = {
   },
   en: {
     lang_cs: "Čeština", lang_sk: "Slovenčina", lang_en: "English",
-    nav_stay: "Accommodation",
+    nav_flights: "Flights", nav_stay: "Stays",
     nav_auto: "Car & campervan",
     auto_title: "Car & campervan",
     auto_sub: "Compare car rental from hundreds of providers in one place.",
     auto_btn: "Find a car",
     auto_pick: "Pick-up location", auto_city_any: "Any city",
     auto_note: "You'll pick dates on the next page at DiscoverCars.",
+    dc_banner_btn: "Search cars on DiscoverCars", stay_soon: "Coming soon.",
     hero_eyebrow: "Cheap flights · 300+ airlines",
     hero_title_pre: "Your journey", hero_title_mid: "starts", hero_title_accent: "here.",
     hero_lead: "Compare hundreds of airlines at once and book your flight at the best price. No hidden fees, in euros.",
@@ -212,6 +215,14 @@ function getInitialLang() {
   return "cs";
 }
 
+function getInitialPage() {
+  try {
+    const h = (window.location.hash || "").replace("#", "");
+    if (h === "auto" || h === "stay") return h;
+  } catch (e) { /* no location */ }
+  return "flights";
+}
+
 const STYLES = `
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@600&display=swap');
 
@@ -242,6 +253,7 @@ const STYLES = `
 .nav-link { font-size:14px; color:var(--mist); font-weight:600; text-decoration:none;
   padding:8px 14px; border-radius:9px; border:1px solid var(--line2); transition:.15s; }
 .nav-link:hover { color:var(--white); border-color:var(--green); }
+.nav-link.on { color:var(--white); border-color:var(--green); background:rgba(59,130,246,.12); }
 .lang { position:relative; }
 .lang-btn { font-size:13px; color:var(--mist); font-weight:600; letter-spacing:.3px;
   background:transparent; border:1px solid var(--line2); border-radius:9px; padding:8px 12px;
@@ -322,6 +334,16 @@ const STYLES = `
 
 /* ── auto a karavan ── */
 .auto { max-width:1140px; margin:54px auto 0; padding:0 22px; }
+.auto-h { font-family:'Sora'; font-weight:700; font-size:26px; letter-spacing:-.6px;
+  margin:0 0 8px; color:var(--white); }
+.auto-sub { font-size:15px; color:var(--mist); margin:0 0 20px; line-height:1.5; max-width:600px; }
+.dc-banner { display:flex; align-items:center; justify-content:center; text-align:center;
+  width:100%; padding:30px 24px; margin:0 0 18px; border-radius:18px;
+  background:linear-gradient(120deg,var(--green),var(--green-d)); color:#fff;
+  font-family:'Sora'; font-weight:800; font-size:19px; letter-spacing:-.3px;
+  text-decoration:none; border:1px solid var(--line2);
+  box-shadow:0 16px 40px rgba(37,99,235,.28); transition:.15s; }
+.dc-banner:hover { transform:translateY(-2px); box-shadow:0 20px 48px rgba(37,99,235,.36); }
 .auto-card { background:var(--navy2); border:1px solid var(--line); border-radius:20px;
   padding:30px 26px; }
 .auto-label { display:block; font-size:10.5px; font-weight:600; letter-spacing:.5px;
@@ -430,6 +452,7 @@ export default function App() {
   const [lang, setLang] = useState(getInitialLang);
   const [langOpen, setLangOpen] = useState(false);
   const [autoCity, setAutoCity] = useState(AUTO_CITIES[0].url);
+  const [page, setPage] = useState(getInitialPage);
   const formRef = useRef(null);
   const langRef = useRef(null);
 
@@ -454,9 +477,18 @@ export default function App() {
 
   const currentShort = (LANGS.find((l) => l.code === lang) || LANGS[0]).short;
 
-  const scrollToAuto = () => {
-    document.getElementById("auto")?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
+  // page <-> URL hash synchronizácia
+  useEffect(() => {
+    try {
+      window.location.hash = page === "flights" ? "" : page;
+    } catch (e) { /* ignore */ }
+  }, [page]);
+
+  useEffect(() => {
+    const onHash = () => setPage(getInitialPage());
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
 
   const swap = () => { setFrom(to); setTo(from); };
 
@@ -488,9 +520,17 @@ export default function App() {
 
       {/* nav */}
       <nav className="nav">
-        <div className="logo"><img src="/logo.svg" alt="MaxiSky" style={{ height: 40, width: "auto", display: "block" }} /></div>
+        <button className="logo" type="button" onClick={() => setPage("flights")}
+          style={{ background: "transparent", border: "none", padding: 0, cursor: "pointer" }}>
+          <img src="/logo.svg" alt="MaxiSky" style={{ height: 40, width: "auto", display: "block" }} />
+        </button>
         <span className="nav-sp" />
-        <button className="nav-link" type="button" onClick={scrollToAuto}>{t("nav_auto")}</button>
+        <button className={"nav-link" + (page === "flights" ? " on" : "")} type="button"
+          onClick={() => setPage("flights")}>{t("nav_flights")}</button>
+        <button className={"nav-link" + (page === "auto" ? " on" : "")} type="button"
+          onClick={() => setPage("auto")}>{t("nav_auto")}</button>
+        <button className={"nav-link" + (page === "stay" ? " on" : "")} type="button"
+          onClick={() => setPage("stay")}>{t("nav_stay")}</button>
         <div className="lang" ref={langRef}>
           <button className={"lang-btn" + (langOpen ? " open" : "")} aria-haspopup="true"
             aria-expanded={langOpen} onClick={() => setLangOpen((o) => !o)}>
@@ -509,10 +549,10 @@ export default function App() {
             </div>
           )}
         </div>
-        <button className="nav-link" type="button" disabled title="Čoskoro"
-          style={{ cursor: "not-allowed", opacity: 0.6 }}>{t("nav_stay")}</button>
       </nav>
 
+      {page === "flights" && (
+      <>
       {/* hero */}
       <header className="hero">
         <svg className="arc" viewBox="0 0 1140 360" preserveAspectRatio="none" aria-hidden="true">
@@ -582,24 +622,6 @@ export default function App() {
               <button key={p.key} className="chip" onClick={() => pick(p.from, p.to)}>{t(p.key)}</button>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* auto a karavan — DiscoverCars */}
-      <section className="auto" id="auto">
-        <div className="auto-card">
-          <label className="auto-label" htmlFor="dcCity">{t("auto_pick")}</label>
-          <div className="auto-row">
-            <select id="dcCity" className="auto-select" value={autoCity}
-              onChange={(e) => setAutoCity(e.target.value)}>
-              {AUTO_CITIES.map((c) => (
-                <option key={c.url} value={c.url}>{c.labelKey ? t(c.labelKey) : c.label}</option>
-              ))}
-            </select>
-            <button className="auto-primary" type="button"
-              onClick={() => window.open(autoCity, "_blank", "noopener")}>{t("auto_btn")}</button>
-          </div>
-          <p className="auto-note">{t("auto_note")}</p>
         </div>
       </section>
 
@@ -719,6 +741,42 @@ export default function App() {
           })}
         </div>
       </section>
+      </>
+      )}
+
+      {/* podstránka AUTO */}
+      {page === "auto" && (
+      <section className="auto" id="auto">
+        <h2 className="auto-h">{t("auto_title")}</h2>
+        <p className="auto-sub">{t("auto_sub")}</p>
+        <a className="dc-banner" href="https://www.discovercars.com/?a_aid=maxisky"
+          target="_blank" rel="sponsored noopener">{t("dc_banner_btn")}</a>
+        <div className="auto-card">
+          <label className="auto-label" htmlFor="dcCity">{t("auto_pick")}</label>
+          <div className="auto-row">
+            <select id="dcCity" className="auto-select" value={autoCity}
+              onChange={(e) => setAutoCity(e.target.value)}>
+              {AUTO_CITIES.map((c) => (
+                <option key={c.url} value={c.url}>{c.labelKey ? t(c.labelKey) : c.label}</option>
+              ))}
+            </select>
+            <button className="auto-primary" type="button"
+              onClick={() => window.open(autoCity, "_blank", "noopener")}>{t("auto_btn")}</button>
+          </div>
+          <p className="auto-note">{t("auto_note")}</p>
+        </div>
+      </section>
+      )}
+
+      {/* podstránka UBYTOVANIE */}
+      {page === "stay" && (
+      <section className="auto">
+        <div className="auto-card">
+          <h2 className="auto-h">{t("nav_stay")}</h2>
+          <p className="auto-sub" style={{ margin: 0 }}>{t("stay_soon")}</p>
+        </div>
+      </section>
+      )}
 
       {/* pätička */}
       <footer className="site-ft">
