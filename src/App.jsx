@@ -74,6 +74,14 @@ const LANGS = [
 const translations = {
   cs: {
     lang_cs: "Čeština", lang_sk: "Slovenčina", lang_en: "English",
+    seo_title_flights: "MaxiSky – levné letenky, porovnání stovek aerolinek",
+    seo_desc_flights: "Porovnejte stovky aerolinek najednou a najděte nejlevnější letenku. Bez skrytých poplatků, ceny v eurech.",
+    seo_title_auto: "Půjčovna aut a karavanů – MaxiSky",
+    seo_desc_auto: "Porovnejte půjčovny aut od stovek poskytovatelů na jednom místě. Nejlepší ceny, storno zdarma.",
+    seo_title_stay: "Ubytování a hotely za nejlepší ceny – MaxiSky",
+    seo_desc_stay: "Miliony ubytování po celém světě s ověřenými recenzemi. Skvělé ceny a storno zdarma u mnoha hotelů.",
+    seo_title_tours: "Zájezdy a Last minute – porovnání 120+ CK – MaxiSky",
+    seo_desc_tours: "Porovnejte zájezdy a last minute od více než 120 cestovních kanceláří. Stejné ceny jako u CK.",
     nav_flights: "Letenky", nav_stay: "Ubytování",
     nav_auto: "Auto a karavan",
     auto_title: "Auto a karavan",
@@ -189,6 +197,14 @@ const translations = {
   },
   sk: {
     lang_cs: "Čeština", lang_sk: "Slovenčina", lang_en: "English",
+    seo_title_flights: "MaxiSky – lacné letenky, porovnanie stoviek aeroliniek",
+    seo_desc_flights: "Porovnajte stovky aeroliniek naraz a nájdite najlacnejšiu letenku. Bez skrytých poplatkov, ceny v eurách.",
+    seo_title_auto: "Požičovňa áut a karavanov – MaxiSky",
+    seo_desc_auto: "Porovnajte požičovne áut od stoviek poskytovateľov na jednom mieste. Najlepšie ceny, storno zdarma.",
+    seo_title_stay: "Ubytovanie a hotely za najlepšie ceny – MaxiSky",
+    seo_desc_stay: "Milióny ubytovaní po celom svete s overenými recenziami. Skvelé ceny a storno zdarma pri mnohých hoteloch.",
+    seo_title_tours: "Zájazdy a Last minute – porovnanie 120+ CK – MaxiSky",
+    seo_desc_tours: "Porovnajte zájazdy a last minute od viac než 120 cestovných kancelárií. Rovnaké ceny ako u CK.",
     nav_flights: "Letenky", nav_stay: "Ubytovanie",
     nav_auto: "Auto a karavan",
     auto_title: "Auto a karavan",
@@ -304,6 +320,14 @@ const translations = {
   },
   en: {
     lang_cs: "Čeština", lang_sk: "Slovenčina", lang_en: "English",
+    seo_title_flights: "MaxiSky – cheap flights, compare 300+ airlines",
+    seo_desc_flights: "Compare hundreds of airlines and find the cheapest flight. No hidden fees, prices in euros.",
+    seo_title_auto: "Car & campervan rental – MaxiSky",
+    seo_desc_auto: "Compare car rentals from hundreds of providers in one place. Best prices, free cancellation.",
+    seo_title_stay: "Hotels & stays at the best prices – MaxiSky",
+    seo_desc_stay: "Millions of stays worldwide with verified reviews. Great prices and free cancellation on many hotels.",
+    seo_title_tours: "Tours & Last minute – compare 120+ agencies – MaxiSky",
+    seo_desc_tours: "Compare tours and last-minute deals from 120+ travel agencies. Same prices as the agency.",
     nav_flights: "Flights", nav_stay: "Stays",
     nav_auto: "Car & campervan",
     auto_title: "Car & campervan",
@@ -427,10 +451,13 @@ function getInitialLang() {
   return "cs";
 }
 
+const PAGE_BY_PATH = { "/": "flights", "/auto": "auto", "/ubytovani": "stay", "/zajezdy": "tours" };
+const PATH_BY_PAGE = { flights: "/", auto: "/auto", stay: "/ubytovani", tours: "/zajezdy" };
+
 function getInitialPage() {
   try {
-    const h = (window.location.hash || "").replace("#", "");
-    if (h === "auto" || h === "stay" || h === "tours") return h;
+    const p = PAGE_BY_PATH[window.location.pathname];
+    if (p) return p;
   } catch (e) { /* no location */ }
   return "flights";
 }
@@ -759,18 +786,49 @@ export default function App() {
 
   const currentShort = (LANGS.find((l) => l.code === lang) || LANGS[0]).short;
 
-  // page <-> URL hash synchronizácia
-  useEffect(() => {
-    try {
-      window.location.hash = page === "flights" ? "" : page;
-    } catch (e) { /* ignore */ }
-  }, [page]);
+  // navigácia cez History API (reálne cesty)
+  const go = (p) => {
+    setPage(p);
+    try { window.history.pushState(null, "", PATH_BY_PAGE[p] || "/"); } catch (e) { /* ignore */ }
+  };
 
+  // tlačidlo Späť/Vpred
   useEffect(() => {
-    const onHash = () => setPage(getInitialPage());
-    window.addEventListener("hashchange", onHash);
-    return () => window.removeEventListener("hashchange", onHash);
+    const onPop = () => setPage(getInitialPage());
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
   }, []);
+
+  // spätná kompatibilita so starými #hash linkami → presmeruj na reálnu cestu
+  useEffect(() => {
+    const h = (window.location.hash || "").replace("#", "");
+    if (h === "auto" || h === "stay" || h === "tours") {
+      try { window.history.replaceState(null, "", PATH_BY_PAGE[h]); } catch (e) { /* ignore */ }
+      setPage(h);
+    }
+  }, []);
+
+  // per-stránku SEO meta (title, description, canonical, lang)
+  useEffect(() => {
+    document.title = t("seo_title_" + page);
+    document.documentElement.lang = lang;
+
+    let desc = document.querySelector('meta[name="description"]');
+    if (!desc) {
+      desc = document.createElement("meta");
+      desc.setAttribute("name", "description");
+      document.head.appendChild(desc);
+    }
+    desc.setAttribute("content", t("seo_desc_" + page));
+
+    let canon = document.querySelector('link[rel="canonical"]');
+    if (!canon) {
+      canon = document.createElement("link");
+      canon.setAttribute("rel", "canonical");
+      document.head.appendChild(canon);
+    }
+    canon.setAttribute("href", "https://maxisky.eu" + (PATH_BY_PAGE[page] || "/"));
+  }, [page, lang]);
 
   const swap = () => { setFrom(to); setTo(from); };
 
@@ -802,19 +860,19 @@ export default function App() {
 
       {/* nav */}
       <nav className="nav">
-        <button className="logo" type="button" onClick={() => setPage("flights")}
+        <button className="logo" type="button" onClick={() => go("flights")}
           style={{ background: "transparent", border: "none", padding: 0, cursor: "pointer" }}>
           <img src="/logo.svg" alt="MaxiSky" style={{ height: 40, width: "auto", display: "block" }} />
         </button>
         <span className="nav-sp" />
         <button className={"nav-link" + (page === "flights" ? " on" : "")} type="button"
-          onClick={() => setPage("flights")}>{t("nav_flights")}</button>
+          onClick={() => go("flights")}>{t("nav_flights")}</button>
         <button className={"nav-link" + (page === "auto" ? " on" : "")} type="button"
-          onClick={() => setPage("auto")}>{t("nav_auto")}</button>
+          onClick={() => go("auto")}>{t("nav_auto")}</button>
         <button className={"nav-link" + (page === "stay" ? " on" : "")} type="button"
-          onClick={() => setPage("stay")}>{t("nav_stay")}</button>
+          onClick={() => go("stay")}>{t("nav_stay")}</button>
         <button className={"nav-link" + (page === "tours" ? " on" : "")} type="button"
-          onClick={() => setPage("tours")}>{t("nav_tours")}</button>
+          onClick={() => go("tours")}>{t("nav_tours")}</button>
         <div className="lang" ref={langRef}>
           <button className={"lang-btn" + (langOpen ? " open" : "")} aria-haspopup="true"
             aria-expanded={langOpen} onClick={() => setLangOpen((o) => !o)}>
