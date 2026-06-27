@@ -253,10 +253,25 @@ const STYLES = `
 .nav-sp { flex:1; }
 .nav-meta { font-size:13px; color:var(--mist); font-weight:600; letter-spacing:.3px; }
 .nav-meta b { color:var(--white); }
-.nav-link { font-size:14px; color:var(--white); font-weight:600; text-decoration:none;
-  padding:8px 14px; border-radius:10px; border:1px solid transparent; transition:.15s; }
-.nav-link:hover { color:var(--white); background:rgba(255,255,255,.08); }
-.nav-link.on { color:var(--white); border:1px solid rgba(255,255,255,.6); border-radius:10px; }
+.nav-link {
+  background: transparent !important;
+  color: #ffffff !important;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+}
+.nav-link:hover {
+  background: rgba(255,255,255,.10) !important;
+}
+.nav-link.on {
+  background: transparent !important;
+  border: 1px solid rgba(255,255,255,.65) !important;
+}
 .lang { position:relative; }
 .lang-btn { font-size:13px; color:var(--mist); font-weight:600; letter-spacing:.3px;
   background:transparent; border:1px solid var(--line2); border-radius:9px; padding:8px 12px;
