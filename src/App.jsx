@@ -84,6 +84,19 @@ const translations = {
     stay_b4: "Ověřené recenze od skutečných hostů",
     stay_cta: "Hledat ubytování na Agoda",
     stay_note: "Otevře se web Agoda v nové kartě.",
+    nav_tours: "Zájezdy / Last minute",
+    tours_badge: "Připravujeme",
+    tours_title: "Zájezdy a Last minute s Invia",
+    tours_desc: "Připravujeme spolupráci s Invia – porovnání zájezdů a last minute od více než 120 cestovních kanceláří na jednom místě. Než to spustíme, můžete hledat přímo u nich.",
+    tours_brand_sub: "Zájezdy a last minute od 120+ CK",
+    tours_preview_cap: "Náhled platformy Invia",
+    tours_why_title: "Proč Invia",
+    tours_b1: "Více než 120 cestovních kanceláří na jednom místě",
+    tours_b2: "Last minute i first minute za skvělé ceny",
+    tours_b3: "Stejné ceny jako přímo u cestovní kanceláře",
+    tours_b4: "Ověřené recenze a pojištění proti úpadku CK",
+    tours_cta: "Hledat zájezd na Invia",
+    tours_note: "Otevře se web Invia v nové kartě.",
     hero_eyebrow: "Levné letenky · 300+ aerolinek",
     hero_title_pre: "Vaše cesta", hero_title_mid: "začíná", hero_title_accent: "tady.",
     hero_lead: "Porovnejte stovky aerolinek najednou a rezervujte letenku za nejlepší cenu. Bez skrytých poplatků, v eurech.",
@@ -144,6 +157,19 @@ const translations = {
     stay_b4: "Overené recenzie od skutočných hostí",
     stay_cta: "Hľadať ubytovanie na Agoda",
     stay_note: "Otvorí sa web Agoda v novej karte.",
+    nav_tours: "Zájazdy / Last minute",
+    tours_badge: "Pripravujeme",
+    tours_title: "Zájazdy a Last minute s Invia",
+    tours_desc: "Pripravujeme spoluprácu s Invia – porovnanie zájazdov a last minute od viac než 120 cestovných kancelárií na jednom mieste. Kým to spustíme, môžete hľadať priamo u nich.",
+    tours_brand_sub: "Zájazdy a last minute od 120+ CK",
+    tours_preview_cap: "Náhľad platformy Invia",
+    tours_why_title: "Prečo Invia",
+    tours_b1: "Viac než 120 cestovných kancelárií na jednom mieste",
+    tours_b2: "Last minute aj first minute za skvelé ceny",
+    tours_b3: "Rovnaké ceny ako priamo u cestovnej kancelárie",
+    tours_b4: "Overené recenzie a poistenie proti úpadku CK",
+    tours_cta: "Hľadať zájazd na Invia",
+    tours_note: "Otvorí sa web Invia v novej karte.",
     hero_eyebrow: "Lacné letenky · 300+ aeroliniek",
     hero_title_pre: "Vaša cesta", hero_title_mid: "začína", hero_title_accent: "tu.",
     hero_lead: "Porovnaj stovky aeroliniek naraz a rezervuj letenku za najlepšiu cenu. Bez skrytých poplatkov, v eurách.",
@@ -204,6 +230,19 @@ const translations = {
     stay_b4: "Verified reviews from real guests",
     stay_cta: "Search stays on Agoda",
     stay_note: "Opens Agoda in a new tab.",
+    nav_tours: "Tours / Last minute",
+    tours_badge: "Coming soon",
+    tours_title: "Tours & Last minute with Invia",
+    tours_desc: "We're preparing a partnership with Invia – compare tours and last-minute deals from 120+ travel agencies in one place. Until then, you can search directly on their site.",
+    tours_brand_sub: "Tours & last minute from 120+ agencies",
+    tours_preview_cap: "Invia platform preview",
+    tours_why_title: "Why Invia",
+    tours_b1: "120+ travel agencies in one place",
+    tours_b2: "Last minute and first minute at great prices",
+    tours_b3: "Same prices as booking directly with the agency",
+    tours_b4: "Verified reviews and insolvency protection",
+    tours_cta: "Search tours on Invia",
+    tours_note: "Opens Invia in a new tab.",
     hero_eyebrow: "Cheap flights · 300+ airlines",
     hero_title_pre: "Your journey", hero_title_mid: "starts", hero_title_accent: "here.",
     hero_lead: "Compare hundreds of airlines at once and book your flight at the best price. No hidden fees, in euros.",
@@ -255,7 +294,7 @@ function getInitialLang() {
 function getInitialPage() {
   try {
     const h = (window.location.hash || "").replace("#", "");
-    if (h === "auto" || h === "stay") return h;
+    if (h === "auto" || h === "stay" || h === "tours") return h;
   } catch (e) { /* no location */ }
   return "flights";
 }
@@ -416,6 +455,9 @@ const STYLES = `
   padding:16px 20px; border-bottom:1px solid var(--line2); background:var(--navy2); }
 .stay-logo { font-family:'Sora'; font-weight:800; font-size:24px; letter-spacing:-.5px; color:#1d62f0; }
 .stay-brand-sub { font-size:12.5px; color:var(--mist); font-weight:500; }
+.stay-preview-body { display:grid; place-items:center; min-height:200px; padding:30px 20px;
+  text-align:center; color:#5b6b7e; font-family:'Sora'; font-weight:600; font-size:15px;
+  background:linear-gradient(150deg,#e8eef6,#cdd9ea); }
 .stay-why-title { font-family:'Sora'; font-weight:700; font-size:17px; letter-spacing:-.3px;
   color:var(--white); margin:0 0 14px; }
 .stay-why { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:0 0 24px; }
@@ -601,6 +643,8 @@ export default function App() {
           onClick={() => setPage("auto")}>{t("nav_auto")}</button>
         <button className={"nav-link" + (page === "stay" ? " on" : "")} type="button"
           onClick={() => setPage("stay")}>{t("nav_stay")}</button>
+        <button className={"nav-link" + (page === "tours" ? " on" : "")} type="button"
+          onClick={() => setPage("tours")}>{t("nav_tours")}</button>
         <div className="lang" ref={langRef}>
           <button className={"lang-btn" + (langOpen ? " open" : "")} aria-haspopup="true"
             aria-expanded={langOpen} onClick={() => setLangOpen((o) => !o)}>
@@ -876,6 +920,43 @@ export default function App() {
 
           <a className="stay-cta" href={AGODA_URL} target="_blank" rel="sponsored noopener">{t("stay_cta")}</a>
           <p className="auto-note">{t("stay_note")}</p>
+        </div>
+      </section>
+      )}
+
+      {/* podstránka CESTOVKY / LAST MINUTE */}
+      {page === "tours" && (
+      <section className="auto">
+        <div className="auto-card">
+          <span className="stay-badge">{t("tours_badge")}</span>
+          <h2 className="auto-h">{t("tours_title")}</h2>
+          <p className="auto-sub">{t("tours_desc")}</p>
+
+          <div className="stay-preview">
+            <div className="stay-preview-bar">
+              <span className="stay-logo" style={{ color: "#0a64c2" }}>invia</span>
+              <span className="stay-brand-sub">{t("tours_brand_sub")}</span>
+            </div>
+            <div className="stay-preview-body">
+              <span>{t("tours_preview_cap")}</span>
+            </div>
+          </div>
+
+          <h3 className="stay-why-title">{t("tours_why_title")}</h3>
+          <div className="stay-why">
+            {["tours_b1", "tours_b2", "tours_b3", "tours_b4"].map((k) => (
+              <div key={k} className="stay-why-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"
+                  strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+                <span>{t(k)}</span>
+              </div>
+            ))}
+          </div>
+
+          <a className="stay-cta" href="https://www.invia.cz" target="_blank" rel="sponsored noopener">{t("tours_cta")}</a>
+          <p className="auto-note">{t("tours_note")}</p>
         </div>
       </section>
       )}
