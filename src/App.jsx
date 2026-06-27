@@ -808,18 +808,33 @@ export default function App() {
     }
   }, []);
 
-  // per-stránku SEO meta (title, description, canonical, lang)
+  // per-stránku SEO meta (title, description, canonical, lang, OG/Twitter, FAQ JSON-LD)
   useEffect(() => {
-    document.title = t("seo_title_" + page);
+    const title = t("seo_title_" + page);
+    const description = t("seo_desc_" + page);
+    const url = "https://maxisky.eu" + (PATH_BY_PAGE[page] || "/");
+
+    document.title = title;
     document.documentElement.lang = lang;
 
-    let desc = document.querySelector('meta[name="description"]');
-    if (!desc) {
-      desc = document.createElement("meta");
-      desc.setAttribute("name", "description");
-      document.head.appendChild(desc);
-    }
-    desc.setAttribute("content", t("seo_desc_" + page));
+    // helper: nájde/vytvorí <meta> podľa atribútu (name/property)
+    const setMeta = (attr, key, content) => {
+      let el = document.querySelector(`meta[${attr}="${key}"]`);
+      if (!el) {
+        el = document.createElement("meta");
+        el.setAttribute(attr, key);
+        document.head.appendChild(el);
+      }
+      el.setAttribute("content", content);
+    };
+
+    setMeta("name", "description", description);
+    setMeta("property", "og:type", "website");
+    setMeta("property", "og:title", title);
+    setMeta("property", "og:description", description);
+    setMeta("property", "og:url", url);
+    setMeta("name", "twitter:title", title);
+    setMeta("name", "twitter:description", description);
 
     let canon = document.querySelector('link[rel="canonical"]');
     if (!canon) {
@@ -827,7 +842,31 @@ export default function App() {
       canon.setAttribute("rel", "canonical");
       document.head.appendChild(canon);
     }
-    canon.setAttribute("href", "https://maxisky.eu" + (PATH_BY_PAGE[page] || "/"));
+    canon.setAttribute("href", url);
+
+    // FAQPage structured data – len na domovskej
+    const existing = document.getElementById("faq-jsonld");
+    if (page === "flights") {
+      const faq = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: FAQ_KEYS.map((i) => ({
+          "@type": "Question",
+          name: t("faq_q_" + i),
+          acceptedAnswer: { "@type": "Answer", text: t("faq_a_" + i) },
+        })),
+      };
+      let script = existing;
+      if (!script) {
+        script = document.createElement("script");
+        script.type = "application/ld+json";
+        script.id = "faq-jsonld";
+        document.head.appendChild(script);
+      }
+      script.textContent = JSON.stringify(faq);
+    } else if (existing) {
+      existing.remove();
+    }
   }, [page, lang]);
 
   const swap = () => { setFrom(to); setTo(from); };
