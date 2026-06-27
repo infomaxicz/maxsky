@@ -9,11 +9,11 @@ import React, { useState, useRef, useEffect } from "react";
 
 const WL = "https://fly.maxisky.eu/flights/";
 const AGODA_URL = "https://www.agoda.com/partners/partnersearch.aspx?pcs=1&cid=1967819&hl=cs-cz";
-const INVIA_URL = "https://www.invia.cz/?b_https=1&aid=9227602";
-const INVIA_LASTMINUTE = "https://www.invia.cz/dovolena/last-minute/?b_https=1&aid=9227602";
+const INVIA_URL = "https://www.invia.cz/?b_https=1&aid=9227602&data1=tours_all";
+const INVIA_LASTMINUTE = "https://www.invia.cz/dovolena/last-minute/?b_https=1&aid=9227602&data1=tours_lastminute";
 const INVIA_BANNER = "https://affil.invia.cz/direct/core/tool_dynamic-banner/show-banner/id/9227602-6a3fbdae8f2bb/";
-const INVIA_FIRSTMINUTE = "https://www.invia.cz/dovolena/first-minute/?b_https=1&aid=9227602";
-const INVIA_FORM = "https://affil.invia.cz/direct/core/tool_search-form/render-form/nl_product_id/1/template/300x250/aid/9227602/";
+const INVIA_FIRSTMINUTE = "https://www.invia.cz/dovolena/first-minute/?b_https=1&aid=9227602&data1=tours_firstminute";
+const INVIA_FORM = "https://affil.invia.cz/direct/core/tool_search-form/render-form/nl_product_id/1/template/728x90/color_button_bg/3B82F6/color_button_hover_bg/2563EB/color_button_text/FFFFFF/color_form_bg/152033/color_form_text/FFFFFF/color_scrollbar/1B2740/color_select_border/2A3550/aid/9227602/";
 
 function buildWlUrl({ from, to, depart, ret, adults }) {
   const params = new URLSearchParams({
@@ -954,8 +954,10 @@ export default function App() {
 
           <div className="tours-form-box">
             <h3 className="stay-why-title">{t("tours_form_title")}</h3>
-            <iframe src={INVIA_FORM} title="Invia vyhledávání" width="300" height="250" scrolling="no" frameBorder="0"
-              style={{ border: "none", overflow: "hidden", display: "block", margin: "0 auto", maxWidth: "100%" }} />
+            <div style={{ width: "100%", maxWidth: "760px", margin: "0 auto" }}>
+              <iframe src={INVIA_FORM} title="Invia vyhledávání" width="728" height="90" scrolling="no" frameBorder="0"
+                style={{ border: "none", overflow: "hidden", display: "block", width: "100%", height: "90px" }} />
+            </div>
           </div>
 
           <div className="tours-offers">
