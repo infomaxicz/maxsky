@@ -53,6 +53,10 @@ const translations = {
   cs: {
     lang_cs: "Čeština", lang_sk: "Slovenčina", lang_en: "English",
     nav_stay: "Ubytování",
+    nav_auto: "Auto a karavan",
+    auto_title: "Auto a karavan",
+    auto_sub: "Porovnejte půjčovny aut od stovek poskytovatelů na jednom místě.",
+    auto_btn: "Najít auto", auto_praha: "Praha", auto_soon: "Karavany připravujeme.",
     hero_eyebrow: "Levné letenky · 300+ aerolinek",
     hero_title_pre: "Vaše cesta", hero_title_mid: "začíná", hero_title_accent: "tady.",
     hero_lead: "Porovnejte stovky aerolinek najednou a rezervujte letenku za nejlepší cenu. Bez skrytých poplatků, v eurech.",
@@ -94,6 +98,10 @@ const translations = {
   sk: {
     lang_cs: "Čeština", lang_sk: "Slovenčina", lang_en: "English",
     nav_stay: "Ubytovanie",
+    nav_auto: "Auto a karavan",
+    auto_title: "Auto a karavan",
+    auto_sub: "Porovnaj požičovne áut od stoviek poskytovateľov na jednom mieste.",
+    auto_btn: "Nájsť auto", auto_praha: "Praha", auto_soon: "Karavany pripravujeme.",
     hero_eyebrow: "Lacné letenky · 300+ aeroliniek",
     hero_title_pre: "Vaša cesta", hero_title_mid: "začína", hero_title_accent: "tu.",
     hero_lead: "Porovnaj stovky aeroliniek naraz a rezervuj letenku za najlepšiu cenu. Bez skrytých poplatkov, v eurách.",
@@ -135,6 +143,10 @@ const translations = {
   en: {
     lang_cs: "Čeština", lang_sk: "Slovenčina", lang_en: "English",
     nav_stay: "Accommodation",
+    nav_auto: "Car & campervan",
+    auto_title: "Car & campervan",
+    auto_sub: "Compare car rental from hundreds of providers in one place.",
+    auto_btn: "Find a car", auto_praha: "Prague", auto_soon: "Campervans coming soon.",
     hero_eyebrow: "Cheap flights · 300+ airlines",
     hero_title_pre: "Your journey", hero_title_mid: "starts", hero_title_accent: "here.",
     hero_lead: "Compare hundreds of airlines at once and book your flight at the best price. No hidden fees, in euros.",
@@ -291,6 +303,26 @@ const STYLES = `
   border:1px solid var(--line2); border-radius:999px; padding:7px 13px; transition:.15s; cursor:pointer; }
 .chip:hover { color:#fff; background:var(--green); border-color:var(--green); }
 
+/* ── auto a karavan ── */
+.auto { max-width:1140px; margin:54px auto 0; padding:0 22px; }
+.auto-card { background:var(--navy2); border:1px solid var(--line); border-radius:20px;
+  padding:30px 26px; }
+.auto-card h2 { font-family:'Sora'; font-weight:700; font-size:24px; letter-spacing:-.6px;
+  margin:0 0 8px; color:var(--white); }
+.auto-card .sub { font-size:14.5px; color:var(--mist); margin:0 0 20px; line-height:1.5; max-width:560px; }
+.auto-cta { display:flex; flex-wrap:wrap; align-items:center; gap:10px; }
+.auto-primary { display:inline-flex; align-items:center; justify-content:center;
+  padding:14px 24px; border-radius:14px; background:var(--green); color:#fff;
+  font-family:'Sora'; font-weight:700; font-size:16px; letter-spacing:-.2px;
+  text-decoration:none; transition:.15s; }
+.auto-primary:hover { background:var(--green-d); transform:translateY(-1px); }
+.auto-secondary { display:inline-flex; align-items:center; justify-content:center;
+  padding:13px 18px; border-radius:14px; background:transparent; color:#CAD4DF;
+  border:1px solid var(--line2); font-weight:600; font-size:14.5px;
+  text-decoration:none; transition:.15s; }
+.auto-secondary:hover { color:#fff; background:var(--green); border-color:var(--green); }
+.auto-soon { font-size:12.5px; color:var(--mist); margin:14px 0 0; }
+
 /* ── value strip ── */
 .vals { max-width:1140px; margin:54px auto 0; padding:0 22px;
   display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
@@ -406,6 +438,10 @@ export default function App() {
 
   const currentShort = (LANGS.find((l) => l.code === lang) || LANGS[0]).short;
 
+  const scrollToAuto = () => {
+    document.getElementById("auto")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   const swap = () => { setFrom(to); setTo(from); };
 
   const search = () => {
@@ -438,6 +474,7 @@ export default function App() {
       <nav className="nav">
         <div className="logo"><img src="/logo.svg" alt="MaxiSky" style={{ height: 40, width: "auto", display: "block" }} /></div>
         <span className="nav-sp" />
+        <button className="nav-link" type="button" onClick={scrollToAuto}>{t("nav_auto")}</button>
         <div className="lang" ref={langRef}>
           <button className={"lang-btn" + (langOpen ? " open" : "")} aria-haspopup="true"
             aria-expanded={langOpen} onClick={() => setLangOpen((o) => !o)}>
@@ -529,6 +566,21 @@ export default function App() {
               <button key={p.key} className="chip" onClick={() => pick(p.from, p.to)}>{t(p.key)}</button>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* auto a karavan — DiscoverCars */}
+      <section className="auto" id="auto">
+        <div className="auto-card">
+          <h2>{t("auto_title")}</h2>
+          <p className="sub">{t("auto_sub")}</p>
+          <div className="auto-cta">
+            <a className="auto-primary" href="https://www.discovercars.com/?a_aid=maxisky"
+              target="_blank" rel="sponsored noopener">{t("auto_btn")}</a>
+            <a className="auto-secondary" href="https://www.discovercars.com/cz/czech-republic/prague/prg?a_aid=maxisky"
+              target="_blank" rel="sponsored noopener">{t("auto_praha")}</a>
+          </div>
+          <p className="auto-soon">{t("auto_soon")}</p>
         </div>
       </section>
 
