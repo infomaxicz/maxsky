@@ -462,6 +462,8 @@ function getInitialLang() {
 
 const PAGE_BY_PATH = { "/": "flights", "/auto": "auto", "/ubytovani": "stay", "/zajezdy": "tours" };
 const PATH_BY_PAGE = { flights: "/", auto: "/auto", stay: "/ubytovani", tours: "/zajezdy" };
+// canonical/og:url so lomkou na konci (server 301-uje /auto → /auto/); routovanie ostáva bez lomky
+const CANON_BY_PAGE = { flights: "/", auto: "/auto/", stay: "/ubytovani/", tours: "/zajezdy/" };
 
 function getInitialPage() {
   try {
@@ -826,7 +828,7 @@ export default function App() {
     const is404 = page === "404";
     const title = is404 ? "404 – MaxiSky" : t("seo_title_" + page);
     const description = is404 ? "" : t("seo_desc_" + page);
-    const url = "https://maxisky.eu" + (PATH_BY_PAGE[page] || "/");
+    const url = "https://maxisky.eu" + (CANON_BY_PAGE[page] || "/");
     const image = "https://maxisky.eu/og-image.jpg";
 
     document.title = title;

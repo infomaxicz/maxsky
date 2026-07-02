@@ -42,7 +42,7 @@ const ROUTES = [
   },
   {
     out: "auto/index.html",
-    path: "/auto",
+    path: "/auto/",
     title: "Půjčovna aut a karavanů – MaxiSky",
     description:
       "Porovnejte půjčovny aut od stovek poskytovatelů na jednom místě. Nejlepší ceny, storno zdarma.",
@@ -55,7 +55,7 @@ const ROUTES = [
   },
   {
     out: "ubytovani/index.html",
-    path: "/ubytovani",
+    path: "/ubytovani/",
     title: "Ubytování a hotely za nejlepší ceny – MaxiSky",
     description:
       "Miliony ubytování po celém světě s ověřenými recenzemi. Skvělé ceny a storno zdarma u mnoha hotelů.",
@@ -68,7 +68,7 @@ const ROUTES = [
   },
   {
     out: "zajezdy/index.html",
-    path: "/zajezdy",
+    path: "/zajezdy/",
     title: "Zájezdy a Last minute – porovnání 120+ CK – MaxiSky",
     description:
       "Porovnejte zájezdy a last minute od více než 120 cestovních kanceláří. Stejné ceny jako u CK.",
