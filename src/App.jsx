@@ -9,7 +9,9 @@ import React, { useState, useRef, useEffect } from "react";
 
 const WL = "https://fly.maxisky.eu/flights/";
 const DC_URL = "https://www.discovercars.com/?a_aid=maxisky";
-const AGODA_URL = "https://www.agoda.com/partners/partnersearch.aspx?pcs=1&cid=1967819&hl=cs-cz";
+const AGODA_HL = { cs: "cs-cz", sk: "sk-sk", en: "en-us" };
+const agodaUrl = (lang) =>
+  `https://www.agoda.com/partners/partnersearch.aspx?pcs=1&cid=1967819&hl=${AGODA_HL[lang] || "cs-cz"}`;
 const INVIA_URL = "https://www.invia.cz/?b_https=1&aid=9227602&data1=tours_all";
 const INVIA_LASTMINUTE = "https://www.invia.cz/dovolena/last-minute/?b_https=1&aid=9227602&data1=tours_lastminute";
 const INVIA_BANNER = "https://affil.invia.cz/direct/core/tool_dynamic-banner/show-banner/id/9227602-6a3fbdae8f2bb/";
@@ -34,6 +36,13 @@ function buildWlUrl({ from, to, depart, ret, adults }) {
   });
   if (ret) params.set("return_date", ret);
   return WL + "?" + params.toString();
+}
+
+// predvolené dátumy vyhľadávania: odlet = dnes + 14 dní, návrat = dnes + 21 dní
+function addDaysISO(days) {
+  const d = new Date();
+  d.setDate(d.getDate() + days);
+  return d.toISOString().slice(0, 10);
 }
 
 const POPULAR = [
@@ -456,8 +465,11 @@ const PATH_BY_PAGE = { flights: "/", auto: "/auto", stay: "/ubytovani", tours: "
 
 function getInitialPage() {
   try {
-    const p = PAGE_BY_PATH[window.location.pathname];
+    let path = window.location.pathname;
+    if (path.length > 1 && path.endsWith("/")) path = path.slice(0, -1);
+    const p = PAGE_BY_PATH[path];
     if (p) return p;
+    return "404"; // neznáma cesta → 404 (nerenderuj homepage)
   } catch (e) { /* no location */ }
   return "flights";
 }
@@ -753,8 +765,8 @@ export default function App() {
   const [oneWay, setOneWay] = useState(false);
   const [from, setFrom] = useState("BTS");
   const [to, setTo] = useState("LON");
-  const [depart, setDepart] = useState("2026-07-14");
-  const [ret, setRet] = useState("2026-07-21");
+  const [depart, setDepart] = useState(() => addDaysISO(14));
+  const [ret, setRet] = useState(() => addDaysISO(21));
   const [adults, setAdults] = useState(1);
   const [hint, setHint] = useState("");
   const [openFaq, setOpenFaq] = useState(null);
@@ -785,6 +797,7 @@ export default function App() {
   }, [langOpen]);
 
   const currentShort = (LANGS.find((l) => l.code === lang) || LANGS[0]).short;
+  const agodaHref = agodaUrl(lang);
 
   // navigácia cez History API (reálne cesty)
   const go = (p) => {
@@ -810,9 +823,11 @@ export default function App() {
 
   // per-stránku SEO meta (title, description, canonical, lang, OG/Twitter, FAQ JSON-LD)
   useEffect(() => {
-    const title = t("seo_title_" + page);
-    const description = t("seo_desc_" + page);
+    const is404 = page === "404";
+    const title = is404 ? "404 – MaxiSky" : t("seo_title_" + page);
+    const description = is404 ? "" : t("seo_desc_" + page);
     const url = "https://maxisky.eu" + (PATH_BY_PAGE[page] || "/");
+    const image = "https://maxisky.eu/og-image.jpg";
 
     document.title = title;
     document.documentElement.lang = lang;
@@ -828,21 +843,41 @@ export default function App() {
       el.setAttribute("content", content);
     };
 
-    setMeta("name", "description", description);
-    setMeta("property", "og:type", "website");
-    setMeta("property", "og:title", title);
-    setMeta("property", "og:description", description);
-    setMeta("property", "og:url", url);
-    setMeta("name", "twitter:title", title);
-    setMeta("name", "twitter:description", description);
-
-    let canon = document.querySelector('link[rel="canonical"]');
-    if (!canon) {
-      canon = document.createElement("link");
-      canon.setAttribute("rel", "canonical");
-      document.head.appendChild(canon);
+    // robots noindex iba pre 404; pri známych routách meta odstráň
+    let robots = document.querySelector('meta[name="robots"]');
+    if (is404) {
+      if (!robots) {
+        robots = document.createElement("meta");
+        robots.setAttribute("name", "robots");
+        document.head.appendChild(robots);
+      }
+      robots.setAttribute("content", "noindex");
+    } else if (robots) {
+      robots.remove();
     }
-    canon.setAttribute("href", url);
+
+    const canon = document.querySelector('link[rel="canonical"]');
+    if (is404) {
+      // 404: neindexovateľná, odstráň canonical
+      if (canon) canon.remove();
+    } else {
+      setMeta("name", "description", description);
+      setMeta("property", "og:type", "website");
+      setMeta("property", "og:title", title);
+      setMeta("property", "og:description", description);
+      setMeta("property", "og:url", url);
+      setMeta("property", "og:image", image);
+      setMeta("name", "twitter:title", title);
+      setMeta("name", "twitter:description", description);
+
+      let c = canon;
+      if (!c) {
+        c = document.createElement("link");
+        c.setAttribute("rel", "canonical");
+        document.head.appendChild(c);
+      }
+      c.setAttribute("href", url);
+    }
 
     // FAQPage structured data – len na domovskej
     const existing = document.getElementById("faq-jsonld");
@@ -1112,7 +1147,7 @@ export default function App() {
         <h2 className="auto-h">{t("auto_title")}</h2>
         <p className="auto-sub">{t("auto_sub")}</p>
         <div className="auto-card auto-frame">
-          <iframe src="https://www.discovercars.com/?a_aid=maxisky" title="DiscoverCars"
+          <iframe src={DC_URL} title="DiscoverCars"
             loading="lazy"
             style={{ width: "100%", height: 560, border: 0, borderRadius: 16, display: "block" }} />
           <p className="auto-note">{t("auto_iframe_note")}</p>
@@ -1175,7 +1210,7 @@ export default function App() {
               <span className="stay-logo">agoda</span>
               <span className="stay-brand-sub">{t("stay_brand_sub")}</span>
             </div>
-            <a href={AGODA_URL} target="_blank" rel="sponsored noopener">
+            <a href={agodaHref} target="_blank" rel="sponsored noopener">
               <img src="/agoda-destinations.png" alt="Agoda"
                 style={{ width: "100%", display: "block", borderRadius: "12px" }} loading="lazy" />
             </a>
@@ -1194,7 +1229,7 @@ export default function App() {
             ))}
           </div>
 
-          <a className="stay-cta" href={AGODA_URL} target="_blank" rel="sponsored noopener">{t("stay_cta")}</a>
+          <a className="stay-cta" href={agodaHref} target="_blank" rel="sponsored noopener">{t("stay_cta")}</a>
           <p className="auto-note">{t("stay_note")}</p>
 
           <div className="tours-trust">
@@ -1222,7 +1257,7 @@ export default function App() {
           <div className="tours-final-cta">
             <h3>{t("stay_cta_title")}</h3>
             <p>{t("stay_cta_sub")}</p>
-            <a className="stay-cta" href={AGODA_URL} target="_blank" rel="sponsored noopener">{t("stay_cta_btn2")}</a>
+            <a className="stay-cta" href={agodaHref} target="_blank" rel="sponsored noopener">{t("stay_cta_btn2")}</a>
           </div>
         </div>
       </section>
@@ -1304,6 +1339,22 @@ export default function App() {
       </section>
       )}
 
+      {/* podstránka 404 */}
+      {page === "404" && (
+      <section className="auto">
+        <div className="auto-card" style={{ textAlign: "center" }}>
+          <h2 className="auto-h">404 – Stránka nenalezena</h2>
+          <p className="auto-sub" style={{ margin: "0 auto 20px" }}>
+            Omlouváme se, tuto stránku se nepodařilo najít. Možná byla přesunuta nebo už neexistuje.
+          </p>
+          <a className="stay-cta" href="/"
+            onClick={(e) => { e.preventDefault(); go("flights"); }}>
+            Zpět na domovskou stránku
+          </a>
+        </div>
+      </section>
+      )}
+
       {/* pätička */}
       <footer className="site-ft">
         <div className="site-ft-in">
@@ -1315,7 +1366,7 @@ export default function App() {
             <a href="/terms.html" target="_blank" rel="noopener">{t("ft_terms")}</a>
             <a href="/privacy.html" target="_blank" rel="noopener">{t("ft_privacy")}</a>
             <a href="/cookies.html" target="_blank" rel="noopener">{t("ft_cookies")}</a>
-            <a href="https://www.discovercars.com/?a_aid=maxisky" target="_blank" rel="sponsored noopener">{t("ft_cars")}</a>
+            <a href={DC_URL} target="_blank" rel="sponsored noopener">{t("ft_cars")}</a>
           </nav>
         </div>
         <div className="site-ft-bot">
